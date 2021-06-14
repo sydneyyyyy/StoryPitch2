@@ -103,13 +103,43 @@ public class EditorDAOImpl implements EditorDAO {
 
 	@Override
 	public boolean updateEditor(Editor eChange) {
-		// TODO Auto-generated method stub
+		
+		String sql = "update editors set editorName = ?, username = ?, password = ?, genreId = ?, jobTitle = ? where id = ?;";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, eChange.getEditorName());
+			ps.setString(2, eChange.getUsername());
+			ps.setString(3, eChange.getPassword());
+			ps.setInt(4, eChange.getGenreId());
+			ps.setString(5, eChange.getJobTitle());
+			
+			boolean success = ps.execute();
+			return success;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
 	@Override
 	public boolean removeEditor(Editor e) {
-		// TODO Auto-generated method stub
+		
+		String sql = "delete editors where id = ?;";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, e.getId());
+			
+			boolean success = ps.execute();
+			return success;
+			
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
+		
 		return false;
 	}
 

@@ -6,14 +6,14 @@ import com.porter.models.StoryType;
 
 public interface StoryTypeDAO {
 
-	public StoryType createStoryType();
+	public StoryType createStoryType(StoryType st);
 
 	public List<StoryType> getAllStoryTypes();
 
 	public StoryType getStoryTypeById(Integer i);
 
-	public StoryType updateStoryType(Integer i);
+	public boolean updateStoryType(StoryType stChange);
 
-	public boolean removeStoryType();
+	public boolean removeStoryType(StoryType st);
 
 }

@@ -2,44 +2,43 @@ package com.porter.services;
 
 import java.util.List;
 
+import com.porter.daos.GenreDAO;
+import com.porter.daos.GenreDAOImpl;
 import com.porter.models.Genre;
 
 public class GenreServicesImpl implements GenreServices {
 
+	private GenreDAO gdao = new GenreDAOImpl();
+
 	@Override
-	public Genre createGenre() {
-		// TODO Auto-generated method stub
-		return null;
+	public Genre createGenre(Genre g) {
+		return gdao.createGenre(g);
 	}
 
 	@Override
 	public List<Genre> getAllGenre() {
-		// TODO Auto-generated method stub
-		return null;
+		return gdao.getAllGenre();
 	}
 
 	@Override
 	public Genre getGenreById(Integer i) {
-		// TODO Auto-generated method stub
-		return null;
+		return gdao.getGenreById(i);
 	}
 
 	@Override
 	public Genre getGenreByGenreName(String genreName) {
-		// TODO Auto-generated method stub
-		return null;
+		return gdao.getGenreByGenreName(genreName);
 	}
 
 	@Override
-	public Genre updateGenre(Integer i) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean updateGenre(Genre gChange) {
+		return gdao.updateGenre(gChange);
 	}
 
 	@Override
-	public boolean deleteGenre() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean deleteGenre(Genre g) {
+		return gdao.deleteGenre(g);
 	}
-
+	
+	
 }

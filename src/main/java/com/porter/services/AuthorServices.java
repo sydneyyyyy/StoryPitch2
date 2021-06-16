@@ -17,8 +17,8 @@ public interface AuthorServices {
 	public Author getAuthorById(Integer i);
 	
 	
-	public Author updateAuthor(Integer i);
+	public boolean updateAuthor(Author aChange);
 	
 	
-	public boolean removeAuthor();
+	public boolean removeAuthor(Author a);
 }

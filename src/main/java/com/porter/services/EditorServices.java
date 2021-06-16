@@ -7,18 +7,18 @@ import com.porter.models.Editor;
 public interface EditorServices {
 	
 	
-	public Editor createEditor();
+	public Editor createEditor(Editor e);
 
 	// getAllEditors
 	public List<Editor> getAllEditors();
 
 	// getAllEditorsByGenre - Editors table.genreId.genreName?
-	public List<Editor> getAllEditorsByGenre(Integer i);
+	public Editor getEditorById(Integer i);
 
 	// updateEditor
-	public Editor updateEditor(Integer i);
+	public boolean updateEditor(Editor eChange);
 
 	// removeEditor
-	public boolean removeEditor(Integer i);
+	public boolean removeEditor(Editor e);
 
 }

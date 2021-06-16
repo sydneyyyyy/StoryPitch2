@@ -2,38 +2,39 @@ package com.porter.services;
 
 import java.util.List;
 
+import com.porter.daos.StoryTypeDAO;
+import com.porter.daos.StoryTypeDAOImpl;
 import com.porter.models.StoryType;
 
 public class StoryTypeServicesImpl implements StoryTypeServices {
 
+	private StoryTypeDAO stdao = new StoryTypeDAOImpl();
+
 	@Override
-	public StoryType createStoryType() {
-		// TODO Auto-generated method stub
-		return null;
+	public StoryType createStoryType(StoryType st) {
+		return stdao.createStoryType(st);
 	}
 
 	@Override
 	public List<StoryType> getAllStoryTypes() {
-		// TODO Auto-generated method stub
-		return null;
+		return stdao.getAllStoryTypes();
 	}
 
 	@Override
 	public StoryType getStoryTypeById(Integer i) {
-		// TODO Auto-generated method stub
-		return null;
+		return stdao.getStoryTypeById(i);
 	}
 
 	@Override
-	public StoryType updateStoryType(Integer i) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean updateStoryType(StoryType st) {
+		return stdao.updateStoryType(st);
 	}
 
 	@Override
-	public boolean removeStoryType() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeStoryType(StoryType st) {
+		return stdao.removeStoryType(st);
 	}
+	
+	
 
 }

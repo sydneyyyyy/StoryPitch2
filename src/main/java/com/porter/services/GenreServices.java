@@ -6,7 +6,7 @@ import com.porter.models.Genre;
 
 public interface GenreServices {
 
-	public Genre createGenre();
+	public Genre createGenre(Genre g);
 	
 	public List<Genre> getAllGenre();
 	
@@ -14,9 +14,9 @@ public interface GenreServices {
 	
 	public Genre getGenreByGenreName(String genreName);
 	
-	public Genre updateGenre(Integer i);
+	public boolean updateGenre(Genre gChange);
 	
-	public boolean deleteGenre();
+	public boolean deleteGenre(Genre g);
 	
 	
 }

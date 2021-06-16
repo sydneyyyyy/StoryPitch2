@@ -2,38 +2,40 @@ package com.porter.services;
 
 import java.util.List;
 
+import com.porter.daos.AuthorDAO;
+import com.porter.daos.AuthorDAOImpl;
 import com.porter.models.Author;
 
 public class AuthorServicesImpl implements AuthorServices {
 
+	
+	private AuthorDAO adao = new AuthorDAOImpl();
+	
+	
 	@Override
 	public Author createAuthor() {
-		// TODO Auto-generated method stub
-		return null;
+		Author newAuthor = new Author();			
+		return adao.createAuthor(newAuthor);
 	}
 
 	@Override
 	public List<Author> getAllAuthors() {
-		// TODO Auto-generated method stub
-		return null;
+		return adao.getAllAuthors();
 	}
 
 	@Override
 	public Author getAuthorById(Integer i) {
-		// TODO Auto-generated method stub
-		return null;
+		return adao.getAuthorById(i);
 	}
 
 	@Override
-	public Author updateAuthor(Integer i) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean updateAuthor(Author aChange) {
+		return adao.updateAuthor(aChange);
 	}
 
 	@Override
-	public boolean removeAuthor() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean removeAuthor(Author a) {
+		return adao.removeAuthor(a);
 	}
 
 }

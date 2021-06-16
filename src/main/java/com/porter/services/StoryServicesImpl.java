@@ -2,38 +2,44 @@ package com.porter.services;
 
 import java.util.List;
 
+import com.porter.daos.StoryDAO;
+import com.porter.daos.StoryDAOImpl;
 import com.porter.models.Story;
 
 public class StoryServicesImpl implements StoryServices {
 
+	private StoryDAO sdao = new StoryDAOImpl();
+
 	@Override
-	public Story createStory() {
-		// TODO Auto-generated method stub
-		return null;
+	public Story createStory(Story s) {
+		return sdao.createStory(s);
 	}
 
 	@Override
 	public List<Story> getAllStories() {
-		// TODO Auto-generated method stub
-		return null;
+		return sdao.getAllStories();
 	}
 
 	@Override
 	public List<Story> getAllStoriesByAuthor(String authorName) {
-		// TODO Auto-generated method stub
-		return null;
+		return sdao.getAllStoriesByAuthor(authorName);
 	}
 
 	@Override
-	public Story updateStory(Integer i) {
-		// TODO Auto-generated method stub
-		return null;
+	public Story getStoryById(Integer i) {
+		return sdao.getStoryById(i);
 	}
 
 	@Override
-	public boolean removeStory(Integer i) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateStory(Story sChange) {
+		return sdao.updateStory(sChange);
 	}
+
+	@Override
+	public boolean removeStory(Story s) {
+		return sdao.removeStory(s);
+	}
+	
+	
 
 }

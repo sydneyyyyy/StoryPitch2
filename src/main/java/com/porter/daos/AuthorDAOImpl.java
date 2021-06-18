@@ -139,4 +139,30 @@ public class AuthorDAOImpl implements AuthorDAO {
 		return false;
 	}
 
+	@Override
+	public Author getAuthorByUsername(String username) {
+		
+		String sql = "select * from authors where username = ?;";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, username);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				Author a = new Author();
+				a.setId(rs.getInt("id"));
+				a.setAuthorName(rs.getString("name"));
+				a.setUsername(rs.getString("username"));
+				a.setPassword(rs.getString("password"));
+				
+				return a;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
 }

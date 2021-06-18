@@ -38,4 +38,9 @@ public class AuthorServicesImpl implements AuthorServices {
 		return adao.removeAuthor(a);
 	}
 
+	@Override
+	public Author getAuthorByUsername(String username) {
+		return adao.getAuthorByUsername(username);
+	}
+
 }

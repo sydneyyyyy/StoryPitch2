@@ -14,6 +14,8 @@ public interface EditorDAO {
 
 	// getAllEditorsByGenre - Editors table.genreId.genreName?
 	public Editor getEditorById(Integer i);
+	
+	public Editor getEditorByUsername(String username);
 
 	// updateEditor
 	public boolean updateEditor(Editor eChange);

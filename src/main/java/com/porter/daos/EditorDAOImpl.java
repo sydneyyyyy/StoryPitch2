@@ -143,4 +143,10 @@ public class EditorDAOImpl implements EditorDAO {
 		return false;
 	}
 
+	@Override
+	public Editor getEditorByUsername(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

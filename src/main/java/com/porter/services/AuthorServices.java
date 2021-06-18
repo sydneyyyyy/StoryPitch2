@@ -17,6 +17,9 @@ public interface AuthorServices {
 	public Author getAuthorById(Integer i);
 	
 	
+	public Author getAuthorByUsername(String username);
+	
+	
 	public boolean updateAuthor(Author aChange);
 	
 	

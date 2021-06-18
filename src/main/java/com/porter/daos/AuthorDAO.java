@@ -11,6 +11,8 @@ public interface AuthorDAO {
 	public List<Author> getAllAuthors();
 
 	public Author getAuthorById(Integer i);
+	
+	public Author getAuthorByUsername(String username);
 
 	public boolean updateAuthor(Author aChange);
 

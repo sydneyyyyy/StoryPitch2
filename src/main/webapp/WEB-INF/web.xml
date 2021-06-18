@@ -6,9 +6,15 @@
   <display-name>Archetype Created Web Application</display-name>
   
   <servlet>
-  	<servlet-name>Hello</servlet-name>
+  	<servlet-name>Authors</servlet-name>
   	<servlet-class>com.porter.servlets.MainServlet</servlet-class>
   </servlet>
   
+  <servlet-mapping>
+  	<servlet-name>Authors</servlet-name>
+  	<url-pattern>/*</url-pattern>
+  </servlet-mapping>
+  
+
   
 </web-app>

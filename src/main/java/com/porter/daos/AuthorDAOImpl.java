@@ -18,7 +18,7 @@ public class AuthorDAOImpl implements AuthorDAO {
 	@Override
 	public Author createAuthor(Author a) {
 		
-		String sql = "call create_author(default, ?, ?, ?);";
+		String sql = "call create_author(?, ?, ?, ?);";
 		
 		try {
 			
@@ -26,6 +26,7 @@ public class AuthorDAOImpl implements AuthorDAO {
 			ps.setString(1, a.getAuthorName());
 			ps.setString(2, a.getUsername());
 			ps.setString(3, a.getPassword());
+			ps.setInt(4, a.getPoints());
 			
 			boolean success = ps.execute();
 			

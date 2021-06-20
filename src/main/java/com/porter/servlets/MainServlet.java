@@ -23,12 +23,12 @@ public class MainServlet extends HttpServlet {
 		ms.mapping(request, response);
 
 		
-		
-		
 	}
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		response.setHeader("Content-Type", "application/json");
 		ms.mapping(request, response);
 		
 	}

@@ -17,7 +17,7 @@ public class StoryTypeDAOImpl implements StoryTypeDAO {
 	@Override
 	public StoryType createStoryType(StoryType st) {
 
-		String sql = "call create_storyType(default, ?, ?);";
+		String sql = "call create_storyType(?, ?);";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);

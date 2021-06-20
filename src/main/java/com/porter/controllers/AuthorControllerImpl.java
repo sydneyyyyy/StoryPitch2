@@ -23,10 +23,11 @@ public class AuthorControllerImpl implements AuthorController {
 	
 	
 	@Override
-	public Author createAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Author a = as.createAuthor();
+	public void createAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Author a = gson.fromJson(request.getReader(), Author.class);
+		as.createAuthor(a);
 		response.getWriter().append(gson.toJson(a));
-		return a;
+
 	}
 
 	@Override

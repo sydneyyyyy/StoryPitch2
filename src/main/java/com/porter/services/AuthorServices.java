@@ -8,7 +8,7 @@ public interface AuthorServices {
 
 	// CRUD Methods
 	
-	public Author createAuthor();
+	public Author createAuthor(Author a);
 	
 	
 	public List<Author> getAllAuthors();

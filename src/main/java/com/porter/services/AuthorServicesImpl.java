@@ -13,9 +13,8 @@ public class AuthorServicesImpl implements AuthorServices {
 	
 	
 	@Override
-	public Author createAuthor() {
-		Author newAuthor = new Author();			
-		return adao.createAuthor(newAuthor);
+	public Author createAuthor(Author a) {			
+		return adao.createAuthor(a);
 	}
 
 	@Override

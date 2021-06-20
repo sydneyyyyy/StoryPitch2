@@ -16,7 +16,7 @@ public class EditorDAOImpl implements EditorDAO {
 	@Override
 	public Editor createEditor(Editor e) {
 		
-		String sql = "call create_editor (default, ?, ?, ?, ?, ?);";
+		String sql = "call create_editor (?, ?, ?, ?, ?);";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -145,7 +145,27 @@ public class EditorDAOImpl implements EditorDAO {
 
 	@Override
 	public Editor getEditorByUsername(String username) {
-		// TODO Auto-generated method stub
+		
+		String sql = "select * from editors where username = ?;";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, username);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				Editor e = new Editor();
+				e.setId(rs.getInt("id"));
+				e.setEditorName(rs.getString("editorName"));
+				e.setUsername(rs.getString("username"));
+				e.setPassword(rs.getString("password"));
+				e.setGenreId(rs.getInt("genreId"));
+				e.setJobTitle(rs.getString("jobTitle"));
+				return e;
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
 		return null;
 	}
 

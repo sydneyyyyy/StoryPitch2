@@ -17,7 +17,7 @@ public class GenreDAOImpl implements GenreDAO {
 	@Override
 	public Genre createGenre(Genre g) {
 		
-		String sql = "call create_genre(default, ?);";
+		String sql = "call create_genre(?);";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);

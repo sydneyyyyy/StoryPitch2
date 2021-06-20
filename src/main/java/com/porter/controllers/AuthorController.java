@@ -10,7 +10,7 @@ import com.porter.models.Author;
 public interface AuthorController {
 
 
-	public Author createAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException;
+	public void createAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException;
 		
 	public void getAllAuthors(HttpServletRequest request, HttpServletResponse response) throws IOException;
 	

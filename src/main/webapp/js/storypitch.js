@@ -1,27 +1,119 @@
-function onLoad() {
-    
-    let url = "http://localhost:8080/StoryPitch-2/homePage.html";
-    let xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = loggedUser;
-    
-    xhttp.open("GET", url, true);
-
-    xhttp.send();
-
-    function loggedUser() {
-        if (xhttp.readyState == 4) {
-            if (xhttp.status == 200) {
-
-                let session = JSON.parse(this.responseText);
-                console.log(session);
-
-                
-            }
-        }
-    }
+function authorLogin() {
+    window.location.href="AuthorLoginPage.html";
 }
 
+function editorLogin() {
+    window.location.href="EditorLoginPage.html";
+}
+
+function authorSignup() {
+    window.location.href="AuthorSignupPage.html";
+}
+
+function onAuthorSignup() {
+
+    let nameInput = document.getElementById('name').value;
+    let usernameInput = document.getElementById('username').value;
+    let passwordInput = document.getElementById('password').value;
+
+    console.log(nameInput);
+    console.log(usernameInput);
+    console.log(passwordInput);
+
+    let author = {
+        name: nameInput,
+        username: usernameInput,
+        password: passwordInput
+    }
+
+    let url = 'http://localhost:8080/StoryPitch-2/authorSignup';
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("POST", url, true);
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("Created Author");
+            window.location.assign('mainPage.html');
+        }
+    };
+
+    xhttp.send(JSON.stringify(author));
+}
+
+
+function onAuthorLogin() {
+
+    
+    let usernameInput = document.getElementById('username').value;
+    let passwordInput = document.getElementById('userPass').value;
+
+    console.log(usernameInput);
+    console.log(passwordInput);
+
+    let author = {
+        username: usernameInput,
+        password: passwordInput
+    }
+    
+    let url = 'http://localhost:8080/StoryPitch-2/authors/id';
+    
+    let xhttp = new XMLHttpRequest();
+    
+    xhttp.open('POST', url, true);
+    // xhttp.setRequestHeader('Content-Type', 'application/json');
+    
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("test");
+            
+            
+            
+           
+        }
+    };
+
+    xhttp.send(JSON.stringify(author));
+   
+}
+
+
+
+function onEditorLogin() {
+
+    let usernameInput = document.getElementById('username').value;
+    let passwordInput = document.getElementById('userPass').value;
+
+    console.log(usernameInput);
+    console.log(passwordInput);
+
+    let editor = {
+        username: usernameInput,
+        password: passwordInput
+    }
+
+    let url = 'http://localhost:8080/StoryPitch-2/editors/id';
+    
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('POST', url, true);
+    // xhttp.setRequestHeader('Content-Type', 'application/json');
+    
+    xhttp.onreadystatechange = displayData;
+
+    xhttp.send(JSON.stringify(editor));
+    
+    function displayData() {
+
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("working");
+            
+        }
+    };
+}
+
+function logout() {
+    
+}
 
 function getData() {
 
@@ -87,6 +179,157 @@ function getData() {
                 
                 
                 dataSection.appendChild(authorTable);
+
+
+
+            }
+        }
+    }
+}
+
+function getEditorData() {
+
+    let url = 'http://localhost:8080/StoryPitch-2/editors';
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = receiveData;
+
+    xhttp.open('GET', url, true);
+
+    xhttp.send(); 
+
+    function receiveData() {
+
+        let dataSection = document.getElementById('data');
+        dataSection.innerHTML = '';
+
+        if (xhttp.readyState == 4) {
+            if (xhttp.status == 200) {
+
+                let res = xhttp.responseText;
+                console.log(res);
+
+                res = JSON.parse(res);
+                console.log(res);
+
+                // create a table
+                let editorTable = document.createElement('table');
+                editorTable.id = 'editorTable';
+
+                // we will need: <tr> table row, <td> for each piece of data, <th> for header
+
+                // Create Table Header Row
+                let thRow = document.createElement('tr');
+                let tHeaders = ['Name', "Username", "Title", "Genre"];
+                for (let h of tHeaders) {
+                    let th = document.createElement('th');
+                    th.innerHTML = h;
+                    thRow.appendChild(th);
+                }
+
+                editorTable.append(thRow);
+
+                // Iterate through the authors and create a tr with the td we want to show
+                for (let editor of res) {
+                    // Row for each Author
+                    let tr = document.createElement('tr');
+
+                    // Author Name
+                    let tdName = document.createElement('td');
+                    tdName.innerHTML = editor.editorName;
+                    tr.appendChild(tdName);
+
+                    // Author Username
+                    let tdUsername = document.createElement('td');
+                    tdUsername.innerHTML = editor.username;
+                    tr.appendChild(tdUsername);
+
+                    let tdTitle = document.createElement('td');
+                    tdTitle.innerHTML = editor.jobTitle;
+                    tr.appendChild(tdTitle);
+
+                    let tdGenre = document.createElement('td');
+                    tdGenre.innerHTML = editor.genreId;
+                    tr.appendChild(tdGenre);
+
+                    editorTable.appendChild(tr);
+                }
+
+                
+                
+                dataSection.appendChild(editorTable);
+
+
+
+            }
+        }
+    }
+}
+
+function getMyStories() {
+
+    let url = 'http://localhost:8080/StoryPitch-2/authors/stories';
+
+    let xhttp = new XMLHttpRequest();
+
+    xhttp.open('GET', url, true);
+
+    xhttp.onreadystatechange = receiveStories;
+
+    xhttp.send(); 
+
+    function receiveStories() {
+
+        let dataSection = document.getElementById('data');
+        dataSection.innerHTML = '';
+
+
+        if (xhttp.readyState == 4) {
+            if (xhttp.status == 200) {
+
+                let res = xhttp.responseText;
+                console.log(res);
+
+                res = JSON.parse(res);
+                console.log(res);
+
+                // create a table
+                let authorTable = document.createElement('table');
+                authorTable.id = 'storyTable';
+
+                // we will need: <tr> table row, <td> for each piece of data, <th> for header
+
+                // Create Table Header Row
+                let thRow = document.createElement('tr');
+                let tHeaders = ['Title', "Author"];
+                for (let h of tHeaders) {
+                    let th = document.createElement('th');
+                    th.innerHTML = h;
+                    thRow.appendChild(th);
+                }
+
+                authorTable.append(thRow);
+
+                for (let story of res) {
+                    
+                    let tr = document.createElement('tr');
+
+                    let tdTitle = document.createElement('td');
+                    tdTitle.innerHTML = story.title;
+                    tr.appendChild(tdTitle);
+
+                    // Author Username
+                    let tdAuthor = document.createElement('td');
+                    tdAuthor.innerHTML = story.authorName;
+                    tr.appendChild(tdAuthor);
+
+                    authorTable.appendChild(tr);
+                }
+
+                
+                
+                dataSection.appendChild(storyTable);
 
 
 

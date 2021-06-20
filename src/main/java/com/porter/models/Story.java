@@ -11,28 +11,28 @@ public class Story {
 	private String authorName;
 	private String title;
 	private String releaseDate;
-	private Integer storyTypeId; // make a list?
-	private Integer genreId; // make a list?
 	private String tagLine;
-	private String desciption;
-	private String submitted;
-	private boolean isHighPriority;
+	private String description;
+	private String submitted = "pending";
+	private boolean isHighPriority = false;
+	private String storyType; 
+	private String genre; 
 
 	public Story() {
 		super();
 	}
 
-	public Story(Integer id, String authorName, String releaseDate, String title, Integer storyTypeId, Integer genreId, String tagLine,
-			String desciption, String submitted, boolean isHighPriority) {
+	public Story(Integer id, String authorName, String releaseDate, String title, String storyType, String genre, String tagLine,
+			String description, String submitted, boolean isHighPriority) {
 		super();
 		this.id = id;
 		this.authorName = authorName;
 		this.releaseDate = releaseDate;
 		this.title = title;
-		this.storyTypeId = storyTypeId;
-		this.genreId = genreId;
+		this.storyType = storyType;
+		this.genre = genre;
 		this.tagLine = tagLine;
-		this.desciption = desciption;
+		this.description = description;
 		this.submitted = submitted;
 		this.isHighPriority = isHighPriority;
 	}
@@ -69,20 +69,20 @@ public class Story {
 		this.title = title;
 	}
 
-	public Integer getStoryTypeId() {
-		return storyTypeId;
+	public String getStoryType() {
+		return storyType;
 	}
 
-	public void setStoryTypeId(Integer storyTypeId) {
-		this.storyTypeId = storyTypeId;
+	public void setStoryType(String storyType) {
+		this.storyType = storyType;
 	}
 
-	public Integer getGenreId() {
-		return genreId;
+	public String getGenre() {
+		return genre;
 	}
 
-	public void setGenreId(Integer genreId) {
-		this.genreId = genreId;
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 
 	public String getTagLine() {
@@ -93,12 +93,12 @@ public class Story {
 		this.tagLine = tagLine;
 	}
 
-	public String getDesciption() {
-		return desciption;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDesciption(String desciption) {
-		this.desciption = desciption;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public String getSubmitted() {
@@ -117,13 +117,15 @@ public class Story {
 		this.isHighPriority = isHighPriority;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Story [id=" + id + ", authorName=" + authorName + ", releaseDate=" + releaseDate + ", title=" + title
-				+ ", storyType=" + storyTypeId + ", genre=" + genreId + ", tagLine=" + tagLine + ", desciption="
-				+ desciption + ", submitted=" + submitted + ", isHighPriority=" + isHighPriority + "]";
+		return "Story [id=" + id + ", authorName=" + authorName + ", title=" + title + ", releaseDate=" + releaseDate
+				+ ", tagLine=" + tagLine + ", description=" + description + ", submitted=" + submitted
+				+ ", isHighPriority=" + isHighPriority + ", storyType=" + storyType + ", genre=" + genre + "]";
 	}
+
+
+	
 
 	
 

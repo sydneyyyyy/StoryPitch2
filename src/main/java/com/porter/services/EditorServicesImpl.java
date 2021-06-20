@@ -11,7 +11,7 @@ public class EditorServicesImpl implements EditorServices {
 	private EditorDAO edao = new EditorDAOImpl();
 	
 	@Override
-	public Editor createEditor(Editor e) {
+	public Editor createEditor() {
 		Editor newEditor = new Editor();
 		return edao.createEditor(newEditor);
 	}
@@ -24,6 +24,11 @@ public class EditorServicesImpl implements EditorServices {
 	@Override
 	public Editor getEditorById(Integer i) {
 		return edao.getEditorById(i);
+	}
+	
+	@Override
+	public Editor getEditorByUsername(String username) {
+		return edao.getEditorByUsername(username);
 	}
 
 	@Override

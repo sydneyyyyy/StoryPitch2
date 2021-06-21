@@ -62,6 +62,7 @@ public class AuthorDAOImpl implements AuthorDAO {
 				a.setAuthorName(rs.getString("name"));
 				a.setUsername(rs.getString("username"));
 				a.setPassword(rs.getString("password"));
+				a.setPoints(rs.getInt("availablePoints"));
 				authors.add(a);
 				
 			}
@@ -92,6 +93,7 @@ public class AuthorDAOImpl implements AuthorDAO {
 				a.setAuthorName(rs.getString("name"));
 				a.setUsername(rs.getString("username"));
 				a.setPassword(rs.getString("password"));
+				a.setPoints(rs.getInt("availablePoints"));
 				
 				return a;
 			}
@@ -103,23 +105,25 @@ public class AuthorDAOImpl implements AuthorDAO {
 	}
 
 	@Override
-	public boolean updateAuthor(Author aChange) {
+	public Author updateAuthor(Author aChange) {
 		
-		String sql = "update authors set name = ?, username = ?, password = ? where id = ?;";
+		String sql = "update authors set name = ?, username = ?, password = ?, availablePoints = ? where id = ?;";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, aChange.getAuthorName());
 			ps.setString(2, aChange.getUsername());
 			ps.setString(3, aChange.getPassword());
+			ps.setInt(4, aChange.getPoints());
+			ps.setInt(5, aChange.getId());
 			
-			boolean success = ps.execute();
-			return success;
+			ps.execute();
+			return aChange;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 
 	@Override
@@ -156,6 +160,7 @@ public class AuthorDAOImpl implements AuthorDAO {
 				a.setAuthorName(rs.getString("name"));
 				a.setUsername(rs.getString("username"));
 				a.setPassword(rs.getString("password"));
+				a.setPoints(rs.getInt("availablePoints"));
 				
 				return a;
 			}

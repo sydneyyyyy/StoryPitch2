@@ -11,7 +11,7 @@ import com.porter.models.Story;
 
 public interface StoryController {
 
-	public void createStory(HttpServletRequest request, HttpServletResponse response) throws IOException;
+	public void createStory(HttpServletRequest request, HttpServletResponse response, Author a) throws IOException;
 	
 	public void getAllStories(HttpServletRequest request, HttpServletResponse response) throws IOException;
 	

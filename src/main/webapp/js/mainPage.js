@@ -105,12 +105,10 @@ function onSubmitStory() {
     let xhttp = new XMLHttpRequest();
     xhttp.open('POST', url, true);
 
-    // JSON.parse(story);
-
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             console.log("Creating Story...");
-            window.location.assign('mainPage.html');
+            // window.location.assign('mainPage.html');
         }
     };
 

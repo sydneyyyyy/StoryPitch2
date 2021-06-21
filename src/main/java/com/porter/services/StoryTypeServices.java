@@ -12,6 +12,8 @@ public interface StoryTypeServices {
 	
 	public StoryType getStoryTypeById(Integer i);
 	
+	public StoryType getStoryTypeByName(String storyType);
+	
 	public boolean updateStoryType(StoryType st);
 	
 	public boolean removeStoryType(StoryType st);

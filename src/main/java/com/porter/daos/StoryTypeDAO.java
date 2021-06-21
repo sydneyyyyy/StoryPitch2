@@ -11,6 +11,8 @@ public interface StoryTypeDAO {
 	public List<StoryType> getAllStoryTypes();
 
 	public StoryType getStoryTypeById(Integer i);
+	
+	public StoryType getStoryTypeByName(String storyType);
 
 	public boolean updateStoryType(StoryType stChange);
 

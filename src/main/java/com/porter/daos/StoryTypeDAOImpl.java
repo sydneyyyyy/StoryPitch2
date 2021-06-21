@@ -137,4 +137,29 @@ public class StoryTypeDAOImpl implements StoryTypeDAO {
 		return false;
 	}
 
+	@Override
+	public StoryType getStoryTypeByName(String storyType) {
+		
+		String sql = "select * from storyTypes where storyType = ?;";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, storyType);
+			
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				StoryType st = new StoryType();
+				st.setId(rs.getInt("id"));
+				st.setStoryType(rs.getString("storyType"));
+				st.setPoints(rs.getInt("points"));
+				
+				return st;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
 }

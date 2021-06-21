@@ -34,6 +34,11 @@ public class StoryTypeServicesImpl implements StoryTypeServices {
 	public boolean removeStoryType(StoryType st) {
 		return stdao.removeStoryType(st);
 	}
+
+	@Override
+	public StoryType getStoryTypeByName(String storyType) {
+		return stdao.getStoryTypeByName(storyType);
+	}
 	
 	
 

@@ -28,7 +28,7 @@ public class AuthorServicesImpl implements AuthorServices {
 	}
 
 	@Override
-	public boolean updateAuthor(Author aChange) {
+	public Author updateAuthor(Author aChange) {
 		return adao.updateAuthor(aChange);
 	}
 

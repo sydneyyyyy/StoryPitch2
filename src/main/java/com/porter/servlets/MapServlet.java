@@ -16,9 +16,12 @@ import com.porter.controllers.EditorController;
 import com.porter.controllers.EditorControllerImpl;
 import com.porter.controllers.StoryController;
 import com.porter.controllers.StoryControllerImpl;
+import com.porter.controllers.StoryTypeController;
+import com.porter.controllers.StoryTypeControllerImpl;
 import com.porter.models.Author;
 import com.porter.models.Editor;
 import com.porter.models.Story;
+import com.porter.models.StoryType;
 import com.porter.services.AuthorServices;
 import com.porter.services.AuthorServicesImpl;
 import com.porter.services.EditorServices;
@@ -32,8 +35,10 @@ public class MapServlet extends HttpServlet {
 	private EditorServices es = new EditorServicesImpl();
 	private EditorController ec = new EditorControllerImpl();
 	private StoryController sc = new StoryControllerImpl();
+	private StoryTypeController stc = new StoryTypeControllerImpl();
 	private static HttpSession session;
 	private static Author a;
+	private static StoryType st;
 
 	private Gson gson = new Gson();
 
@@ -112,11 +117,25 @@ public class MapServlet extends HttpServlet {
 			}
 			
 			case "/StoryPitch-2/newStory": {
-				System.out.println("Creating a new story...");
-				sc.createStory(request, response);
+				System.out.println("Creating story...");
+				a = (Author) session.getAttribute("loggedInUser");
+				sc.createStory(request, response, a);
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}
+			
+//			case "/StoryPitch-2/newStory":{
+//				System.out.println("creating a new story...");
+//				a = (Author) session.getAttribute("loggedInUser");
+//				int points = st.getPoints();
+//				if (a.getPoints() >= points) {
+//					sc.createStory(request, response);
+//					System.out.println("Author has enough points...");
+//				} else {
+//					System.out.println("Error.. You do not have enough points for this submission");
+//				}
+//				
+//			}
 	
 			default: {
 				System.out.println("Reached the default case...");

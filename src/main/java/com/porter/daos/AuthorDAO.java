@@ -14,7 +14,7 @@ public interface AuthorDAO {
 	
 	public Author getAuthorByUsername(String username);
 
-	public boolean updateAuthor(Author aChange);
+	public Author updateAuthor(Author aChange);
 
 	public boolean removeAuthor(Author a);
 

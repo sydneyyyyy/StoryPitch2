@@ -12,21 +12,45 @@ import com.google.gson.GsonBuilder;
 import com.porter.models.Author;
 import com.porter.models.Story;
 import com.porter.models.StoryType;
+import com.porter.services.AuthorServices;
+import com.porter.services.AuthorServicesImpl;
 import com.porter.services.StoryServices;
 import com.porter.services.StoryServicesImpl;
+import com.porter.services.StoryTypeServices;
+import com.porter.services.StoryTypeServicesImpl;
 
 public class StoryControllerImpl implements StoryController {
 
 	private StoryServices ss = new StoryServicesImpl();
+	private StoryTypeServices sts = new StoryTypeServicesImpl();
+	private AuthorServices as = new AuthorServicesImpl();
 	private static Gson gson = new Gson();
+	StoryType st = new StoryType();
 	
 	
-	Author a = new Author();
+//	Author a = new Author();
 	
 	@Override
-	public void createStory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void createStory(HttpServletRequest request, HttpServletResponse response, Author a) throws IOException {
 		Story s = gson.fromJson(request.getReader(), Story.class);
-		ss.createStory(s);
+		String storytype = s.getStoryType();
+		System.out.println(storytype);
+		StoryType stype = sts.getStoryTypeByName(storytype);
+		int points = stype.getPoints();
+		if (a.getPoints() >= points) {
+			System.out.println("Congrats, you submitted a story pitch!");
+			ss.createStory(s);
+			int newPoints = a.getPoints() - points;
+			System.out.println(newPoints);
+			a.setPoints(newPoints);
+			a.getPoints();
+			System.out.println(a);
+			as.updateAuthor(a);
+		} else {
+			System.out.println("You do not have enough points for this submission!");
+		}
+		
+		
 		response.getWriter().append(gson.toJson(s));
 
 	}

@@ -10,8 +10,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 import com.porter.models.Author;
+import com.porter.models.Story;
+import com.porter.models.StoryType;
 import com.porter.services.AuthorServices;
 import com.porter.services.AuthorServicesImpl;
+import com.porter.services.StoryTypeServices;
+import com.porter.services.StoryTypeServicesImpl;
+
 
 
 
@@ -19,8 +24,10 @@ public class AuthorControllerImpl implements AuthorController {
 
 	
 	private AuthorServices as = new AuthorServicesImpl();
+	private StoryTypeServices sts = new StoryTypeServicesImpl();
 	private static Gson gson = new Gson();
-	
+	private static StoryType st;
+	private static Story s;
 	
 	@Override
 	public void createAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -55,6 +62,19 @@ public class AuthorControllerImpl implements AuthorController {
 	@Override
 	public void updateAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Author a = gson.fromJson(request.getReader(), Author.class);
+		// get story's type
+		String storyType = s.getStoryType();
+		System.out.println(storyType);
+		st = sts.getStoryTypeByName(storyType);
+		System.out.println(st);
+		// get points for that story's type
+		int points = st.getPoints();
+		
+		// subtract points from author's points and update author
+		int newPoints = a.getPoints() - points;
+		System.out.println(newPoints);
+		a.setPoints(newPoints);
+		System.out.println(a);
 		as.updateAuthor(a);
 		response.getWriter().append(gson.toJson(a));
 		

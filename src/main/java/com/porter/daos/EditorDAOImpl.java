@@ -23,7 +23,7 @@ public class EditorDAOImpl implements EditorDAO {
 			ps.setString(1, e.getEditorName());
 			ps.setString(2, e.getUsername());
 			ps.setString(3, e.getPassword());
-			ps.setInt(4, e.getGenreId());
+			ps.setString(4, e.getGenre());
 			ps.setString(5, e.getJobTitle());
 			
 			boolean success = ps.execute();
@@ -59,7 +59,7 @@ public class EditorDAOImpl implements EditorDAO {
 				e.setEditorName(rs.getString("editorName"));
 				e.setUsername(rs.getString("username"));
 				e.setPassword(rs.getString("password"));
-				e.setGenreId(rs.getInt("genreId"));
+				e.setGenre(rs.getString("genre"));
 				e.setJobTitle(rs.getString("jobTitle"));
 				editors.add(e);
 				
@@ -91,7 +91,7 @@ public class EditorDAOImpl implements EditorDAO {
 				e.setEditorName(rs.getString("editorName"));
 				e.setUsername(rs.getString("username"));
 				e.setPassword(rs.getString("password"));
-				e.setGenreId(rs.getInt("genreId"));
+				e.setGenre(rs.getString("genre"));
 				e.setJobTitle(rs.getString("jobTitle"));
 				return e;
 			}
@@ -111,7 +111,7 @@ public class EditorDAOImpl implements EditorDAO {
 			ps.setString(1, eChange.getEditorName());
 			ps.setString(2, eChange.getUsername());
 			ps.setString(3, eChange.getPassword());
-			ps.setInt(4, eChange.getGenreId());
+			ps.setString(4, eChange.getGenre());
 			ps.setString(5, eChange.getJobTitle());
 			
 			boolean success = ps.execute();
@@ -159,7 +159,7 @@ public class EditorDAOImpl implements EditorDAO {
 				e.setEditorName(rs.getString("editorName"));
 				e.setUsername(rs.getString("username"));
 				e.setPassword(rs.getString("password"));
-				e.setGenreId(rs.getInt("genreId"));
+				e.setGenre(rs.getString("genre"));
 				e.setJobTitle(rs.getString("jobTitle"));
 				return e;
 			}

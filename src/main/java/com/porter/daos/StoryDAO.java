@@ -15,6 +15,8 @@ public interface StoryDAO {
 	public List<Story> getAllStoriesByAuthor(String authorName);
 	
 	public Story getStoryById(Integer i);
+	
+	public List<Story> getAllPendingStories(String genre, String status);
 
 	// UpdateStory
 	public boolean updateStory(Story sChange);

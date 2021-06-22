@@ -6,20 +6,20 @@ public class Editor {
 	private String editorName;
 	private String username;
 	private String password;
-	private Integer genreId;
+	private String genre;
 	private String jobTitle;
 	
 	public Editor() {
 		super();
 	}
 
-	public Editor(Integer id, String editorName, String username, String password, Integer genreId, String jobTitle) {
+	public Editor(Integer id, String editorName, String username, String password, String genre, String jobTitle) {
 		super();
 		this.id = id;
 		this.editorName = editorName;
 		this.username = username;
 		this.password = password;
-		this.genreId = genreId;
+		this.genre = genre;
 		this.jobTitle = jobTitle;
 	}
 
@@ -55,12 +55,12 @@ public class Editor {
 		this.password = password;
 	}
 
-	public Integer getGenreId() {
-		return genreId;
+	public String getGenre() {
+		return genre;
 	}
 
-	public void setGenreId(Integer genreId) {
-		this.genreId = genreId;
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 
 	public String getJobTitle() {
@@ -74,7 +74,7 @@ public class Editor {
 	@Override
 	public String toString() {
 		return "Editor [id=" + id + ", editorName=" + editorName + ", username=" + username + ", password=" + password
-				+ ", genreId=" + genreId + ", jobTitle=" + jobTitle + "]";
+				+ ", genre=" + genre + ", jobTitle=" + jobTitle + "]";
 	}
 	
 	

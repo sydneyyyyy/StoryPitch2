@@ -15,6 +15,9 @@ public interface StoryServices {
 	// GetAllStoriesByAuthor
 	public List<Story> getAllStoriesByAuthor(String authorName);
 	
+	public List<Story> getAllPendingStories(String genre, String status);
+	
+	
 	public Story getStoryById(Integer i);
 
 	// UpdateStory

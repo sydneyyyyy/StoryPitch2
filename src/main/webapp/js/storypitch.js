@@ -79,37 +79,7 @@ function onAuthorLogin() {
 
 
 
-function onEditorLogin() {
 
-    let usernameInput = document.getElementById('username').value;
-    let passwordInput = document.getElementById('userPass').value;
-
-    console.log(usernameInput);
-    console.log(passwordInput);
-
-    let editor = {
-        username: usernameInput,
-        password: passwordInput
-    }
-
-    let url = 'http://localhost:8080/StoryPitch-2/editors/id';
-    
-    let xhttp = new XMLHttpRequest();
-    xhttp.open('POST', url, true);
-    // xhttp.setRequestHeader('Content-Type', 'application/json');
-    
-    xhttp.onreadystatechange = displayData;
-
-    xhttp.send(JSON.stringify(editor));
-    
-    function displayData() {
-
-        if (this.readyState == 4 && this.status == 200) {
-            console.log("working");
-            
-        }
-    };
-}
 
 function logout() {
     
@@ -187,85 +157,85 @@ function getData() {
     }
 }
 
-function getEditorData() {
+// function getEditorData() {
 
-    let url = 'http://localhost:8080/StoryPitch-2/editors';
+//     let url = 'http://localhost:8080/StoryPitch-2/editors';
 
-    let xhttp = new XMLHttpRequest();
+//     let xhttp = new XMLHttpRequest();
 
-    xhttp.onreadystatechange = receiveData;
+//     xhttp.onreadystatechange = receiveData;
 
-    xhttp.open('GET', url, true);
+//     xhttp.open('GET', url, true);
 
-    xhttp.send(); 
+//     xhttp.send(); 
 
-    function receiveData() {
+//     function receiveData() {
 
-        let dataSection = document.getElementById('data');
-        dataSection.innerHTML = '';
+//         let dataSection = document.getElementById('data');
+//         dataSection.innerHTML = '';
 
-        if (xhttp.readyState == 4) {
-            if (xhttp.status == 200) {
+//         if (xhttp.readyState == 4) {
+//             if (xhttp.status == 200) {
 
-                let res = xhttp.responseText;
-                console.log(res);
+//                 let res = xhttp.responseText;
+//                 console.log(res);
 
-                res = JSON.parse(res);
-                console.log(res);
+//                 res = JSON.parse(res);
+//                 console.log(res);
 
-                // create a table
-                let editorTable = document.createElement('table');
-                editorTable.id = 'editorTable';
+//                 // create a table
+//                 let editorTable = document.createElement('table');
+//                 editorTable.id = 'editorTable';
 
-                // we will need: <tr> table row, <td> for each piece of data, <th> for header
+//                 // we will need: <tr> table row, <td> for each piece of data, <th> for header
 
-                // Create Table Header Row
-                let thRow = document.createElement('tr');
-                let tHeaders = ['Name', "Username", "Title", "Genre"];
-                for (let h of tHeaders) {
-                    let th = document.createElement('th');
-                    th.innerHTML = h;
-                    thRow.appendChild(th);
-                }
+//                 // Create Table Header Row
+//                 let thRow = document.createElement('tr');
+//                 let tHeaders = ['Name', "Username", "Title", "Genre"];
+//                 for (let h of tHeaders) {
+//                     let th = document.createElement('th');
+//                     th.innerHTML = h;
+//                     thRow.appendChild(th);
+//                 }
 
-                editorTable.append(thRow);
+//                 editorTable.append(thRow);
 
-                // Iterate through the authors and create a tr with the td we want to show
-                for (let editor of res) {
-                    // Row for each Author
-                    let tr = document.createElement('tr');
+//                 // Iterate through the authors and create a tr with the td we want to show
+//                 for (let editor of res) {
+//                     // Row for each Author
+//                     let tr = document.createElement('tr');
 
-                    // Author Name
-                    let tdName = document.createElement('td');
-                    tdName.innerHTML = editor.editorName;
-                    tr.appendChild(tdName);
+//                     // Author Name
+//                     let tdName = document.createElement('td');
+//                     tdName.innerHTML = editor.editorName;
+//                     tr.appendChild(tdName);
 
-                    // Author Username
-                    let tdUsername = document.createElement('td');
-                    tdUsername.innerHTML = editor.username;
-                    tr.appendChild(tdUsername);
+//                     // Author Username
+//                     let tdUsername = document.createElement('td');
+//                     tdUsername.innerHTML = editor.username;
+//                     tr.appendChild(tdUsername);
 
-                    let tdTitle = document.createElement('td');
-                    tdTitle.innerHTML = editor.jobTitle;
-                    tr.appendChild(tdTitle);
+//                     let tdTitle = document.createElement('td');
+//                     tdTitle.innerHTML = editor.jobTitle;
+//                     tr.appendChild(tdTitle);
 
-                    let tdGenre = document.createElement('td');
-                    tdGenre.innerHTML = editor.genreId;
-                    tr.appendChild(tdGenre);
+//                     let tdGenre = document.createElement('td');
+//                     tdGenre.innerHTML = editor.genreId;
+//                     tr.appendChild(tdGenre);
 
-                    editorTable.appendChild(tr);
-                }
+//                     editorTable.appendChild(tr);
+//                 }
 
                 
                 
-                dataSection.appendChild(editorTable);
+//                 dataSection.appendChild(editorTable);
 
 
 
-            }
-        }
-    }
-}
+//             }
+//         }
+//     }
+// }
 
 function getMyStories() {
 

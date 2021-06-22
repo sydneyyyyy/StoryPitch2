@@ -31,7 +31,7 @@ public class StoryControllerImpl implements StoryController {
 //	Author a = new Author();
 	
 	@Override
-	public void createStory(HttpServletRequest request, HttpServletResponse response, Author a) throws IOException {
+	public Story createStory(HttpServletRequest request, HttpServletResponse response, Author a) throws IOException {
 		Story s = gson.fromJson(request.getReader(), Story.class);
 		String storytype = s.getStoryType();
 		System.out.println(storytype);
@@ -47,12 +47,15 @@ public class StoryControllerImpl implements StoryController {
 			System.out.println(a);
 			as.updateAuthor(a);
 		} else {
-			System.out.println("You do not have enough points for this submission!");
+			System.out.println("You do not have enough points for this submission! Story Pitch placed on hold");
+			ss.createStory(s);
+			s.setSubmitted("on-hold");
+			ss.updateStory(s);
 		}
 		
 		
 		response.getWriter().append(gson.toJson(s));
-
+		return s;
 	}
 
 	@Override
@@ -73,16 +76,22 @@ public class StoryControllerImpl implements StoryController {
 	}
 
 	@Override
-	public void getAllStoriesByGenre(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// TODO Auto-generated method stub
-
+	public List<Story> getAllPendingStories(HttpServletRequest request, HttpServletResponse response, String genre) throws IOException {
+		String status = "pending";
+		List<Story> stories = ss.getAllPendingStories(genre, status);
+		System.out.println(stories);
+		response.getWriter().append(gson.toJson(stories));
+		return stories;
 	}
 
-	@Override
-	public void getAllStoriesByStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// TODO Auto-generated method stub
-
-	}
+//	@Override
+//	public void getAllStoriesByStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//		String status = "pending";
+//		List<Story> stories = ss.getAllStoriesByStatus(status,);
+//		System.out.println(stories);
+//		response.getWriter().append(gson.toJson(stories));
+//
+//	}
 
 	@Override
 	public Story getStoryById(HttpServletRequest request, HttpServletResponse response) throws IOException {

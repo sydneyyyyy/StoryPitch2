@@ -125,6 +125,41 @@ public class StoryDAOImpl implements StoryDAO {
 
 		return null;
 	}
+	
+	@Override
+	public List<Story> getAllPendingStories(String genre, String status) {
+		List<Story> stories = new ArrayList<Story>();
+		String sql = "select * from stories where genre = ? AND submitted = ?;";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, genre);
+			ps.setString(2, status);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Story s = new Story();
+				s.setId(rs.getInt("id"));
+				s.setAuthorName(rs.getString("authorName"));
+				s.setTitle(rs.getString("title"));
+				s.setReleaseDate(rs.getString("releaseDate"));
+				s.setTagLine(rs.getString("tagLine"));
+				s.setDescription(rs.getString("description"));
+				s.setSubmitted(rs.getString("submitted"));
+				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
+				s.setStoryType(rs.getString("storyType"));
+				s.setGenre(rs.getString("genre"));
+				
+				stories.add(s);		
+			}
+			
+			return stories;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	@Override
 	public Story getStoryById(Integer i) {
@@ -164,7 +199,7 @@ public class StoryDAOImpl implements StoryDAO {
 	@Override
 	public boolean updateStory(Story sChange) {
 
-		String sql = "update stories set authorName = ?, title = ?, releaseDate = ?, storyTypeId = ?, genreId = ?, tagLine = ?, description = ?, submitted = ?, isHighPriority = ?;";
+		String sql = "update stories set authorName = ?, title = ?, releaseDate = ?, tagLine = ?, description = ?, submitted = ?, isHighPriority = ?,  storyType = ?, genre = ? where id = ?;";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -177,6 +212,7 @@ public class StoryDAOImpl implements StoryDAO {
 			ps.setBoolean(7, sChange.getIsHighPriority());
 			ps.setString(8, sChange.getStoryType());
 			ps.setString(9, sChange.getGenre());
+			ps.setInt(10, sChange.getId());
 
 			boolean success = ps.execute();
 			
@@ -213,5 +249,7 @@ public class StoryDAOImpl implements StoryDAO {
 		
 		return false;
 	}
+
+
 
 }

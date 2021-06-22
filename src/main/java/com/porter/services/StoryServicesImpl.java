@@ -39,6 +39,11 @@ public class StoryServicesImpl implements StoryServices {
 	public boolean removeStory(Story s) {
 		return sdao.removeStory(s);
 	}
+
+	@Override
+	public List<Story> getAllPendingStories(String genre, String status) {
+		return sdao.getAllPendingStories(genre, status);
+	}
 	
 	
 

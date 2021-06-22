@@ -38,6 +38,7 @@ public class MapServlet extends HttpServlet {
 	private StoryTypeController stc = new StoryTypeControllerImpl();
 	private static HttpSession session;
 	private static Author a;
+	private static Editor e;
 	private static StoryType st;
 
 	private Gson gson = new Gson();
@@ -49,6 +50,9 @@ public class MapServlet extends HttpServlet {
 		
 		session.setAttribute("loggedInUser", a);
 		System.out.println(session.getAttribute("loggedInUser"));
+		
+		session.setAttribute("loggedInEditor", e);
+		System.out.println(session.getAttribute("loggedInEditor"));
 
 		String uri = request.getRequestURI();
 		System.out.println(uri);
@@ -59,6 +63,13 @@ public class MapServlet extends HttpServlet {
 				a = (Author) session.getAttribute("loggedInUser");
 				System.out.println(a);
 				response.getWriter().append(gson.toJson(a));
+				break;
+			}
+			
+			case "/StoryPitch-2/edSession" : {
+				e = (Editor) session.getAttribute("loggedInEditor");
+				System.out.println(e);
+				response.getWriter().append(gson.toJson(e));
 				break;
 			}
 			
@@ -86,6 +97,15 @@ public class MapServlet extends HttpServlet {
 				System.out.println(a);
 				break;
 			}
+			
+			case "/StoryPitch-2/editors/id": {
+				System.out.println("Editor Logging in...");
+				e = ec.getEditorById(request, response);
+				System.out.println(e);
+				session.setAttribute("loggedInEditor", e);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
 	
 			case "/StoryPitch-2/updateAuthor": {
 				System.out.println("Updating author...");
@@ -101,13 +121,6 @@ public class MapServlet extends HttpServlet {
 				response.getWriter().append(gson.toJson(editors));
 				break;
 			}
-	
-			case "/StoryPitch-2/editors/id": {
-				System.out.println("Editor Logging in...");
-				Editor ed = ec.getEditorById(request, response);
-				System.out.println(ed);
-				break;
-			}
 			
 			case "/StoryPitch-2/authors/stories": {
 				System.out.println("Getting Author's Stories...");
@@ -116,26 +129,23 @@ public class MapServlet extends HttpServlet {
 				break;
 			}
 			
-			case "/StoryPitch-2/newStory": {
-				System.out.println("Creating story...");
-				a = (Author) session.getAttribute("loggedInUser");
-				sc.createStory(request, response, a);
+			case "/StoryPitch-2/editors/stories": {
+				System.out.println("Getting all Pending Stories...");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				sc.getAllPendingStories(request, response, e.getGenre());
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}
 			
-//			case "/StoryPitch-2/newStory":{
-//				System.out.println("creating a new story...");
-//				a = (Author) session.getAttribute("loggedInUser");
-//				int points = st.getPoints();
-//				if (a.getPoints() >= points) {
-//					sc.createStory(request, response);
-//					System.out.println("Author has enough points...");
-//				} else {
-//					System.out.println("Error.. You do not have enough points for this submission");
-//				}
-//				
-//			}
+			case "/StoryPitch-2/newStory": {
+				System.out.println("Creating story...");
+				a = (Author) session.getAttribute("loggedInUser");
+				Story s = sc.createStory(request, response, a);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				response.getWriter().append(gson.toJson(s));
+				break;
+			}
+			
 	
 			default: {
 				System.out.println("Reached the default case...");

@@ -15,10 +15,12 @@ public interface StoryServices {
 	// GetAllStoriesByAuthor
 	public List<Story> getAllStoriesByAuthor(String authorName);
 	
+	public List<Story> getAllPendingStories(String status, String ae_approval, String ge_approval);
+	
 	public List<Story> getAllAsstPendingStories(String genre, String status, String approval);
 	
-	public List<Story> getAllPendingHighPriorityStories(String genre, Boolean isHighPriority, String status);
-	
+//	public List<Story> getAllPendingHighPriorityStories(String genre, Boolean isHighPriority, String status);
+//	
 	public Story getStoryById(Integer i);
 
 	// UpdateStory

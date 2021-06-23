@@ -160,29 +160,45 @@ public class MapServlet extends HttpServlet {
 				break;
 			}
 			
+			case "/StoryPitch-2/gen/stories": {
+				System.out.println("Getting all General Pending Stories");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				sc.getAllPendingStories(request, response, e);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
+			
 			case "/StoryPitch-2/currentStory": {
-				System.out.println("Updating story...");
-				sc.getStoryById(request, response);
+				System.out.println("Grabbing story...");
+				s = sc.getStoryById(request, response);
 				session.setAttribute("currentStory", s);
 				System.out.println(s);
 				break;
 			}
 			
-//			case "/StoryPitch-2/approvePitch": {
-//				System.out.println("Approving pitch...");
-//				s = (Story) session.getAttribute("currentStory");
-//				sc.updateStories(request, response);
-//				response.setHeader("Access-Control-Allow-Origin", "*");
-//				break;
-//			}
-			
-			case "/StoryPitch-2/asst/highStories": {
-				System.out.println("Getting all Assistant High Priority Stories...");
+			case "/StoryPitch-2/approveStory": {
+				System.out.println("Approving pitch...");
 				e = (Editor) session.getAttribute("loggedInEditor");
-				sc.getAllPendingHighPriorityStories(request, response, e.getGenre());
+				s = (Story) session.getAttribute("currentStory");
+				
+				if (s.getAe_approval() != "approved") {
+					System.out.println("asst");
+					sc.updateStories(request, response, e, s);
+				} else {
+					System.out.println("oops");
+				}
+//				sc.updateStories(request, response, e);
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}
+			
+//			case "/StoryPitch-2/asst/highStories": {
+//				System.out.println("Getting all Assistant High Priority Stories...");
+//				e = (Editor) session.getAttribute("loggedInEditor");
+//				sc.getAllPendingHighPriorityStories(request, response, e.getGenre());
+//				response.setHeader("Access-Control-Allow-Origin", "*");
+//				break;
+//			}
 			
 //			case "/StoryPitch-2/senEditor/pendingStories": {
 //				System.out.println("Getting all pending stories...");
@@ -198,6 +214,12 @@ public class MapServlet extends HttpServlet {
 				Story s = sc.createStory(request, response, a);
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				response.getWriter().append(gson.toJson(s));
+				break;
+			}
+			
+			case "/StoryPitch-2/logout": {
+				System.out.println("Logging out...");
+				session.invalidate();
 				break;
 			}
 			

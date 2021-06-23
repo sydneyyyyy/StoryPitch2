@@ -41,8 +41,13 @@ public class StoryServicesImpl implements StoryServices {
 	}
 
 	@Override
-	public List<Story> getAllPendingStories(String genre, String status) {
-		return sdao.getAllPendingStories(genre, status);
+	public List<Story> getAllAsstPendingStories(String genre, String status, String ae_approval) {
+		return sdao.getAllAsstPendingStories(genre, status, ae_approval);
+	}
+
+	@Override
+	public List<Story> getAllPendingHighPriorityStories(String genre, Boolean isHighPriority, String status) {
+		return sdao.getAllPendingHighPriorityStories(genre, isHighPriority, status);
 	}
 	
 	

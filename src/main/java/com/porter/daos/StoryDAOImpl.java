@@ -18,7 +18,7 @@ public class StoryDAOImpl implements StoryDAO {
 	@Override
 	public Story createStory(Story s) {
 
-		String sql = "insert into stories values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning *;";
+		String sql = "insert into stories values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning *;";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -31,6 +31,10 @@ public class StoryDAOImpl implements StoryDAO {
 			ps.setBoolean(7, s.getIsHighPriority());
 			ps.setString(8, s.getStoryType());
 			ps.setString(9, s.getGenre());
+			ps.setString(10, s.getDateSubmitted());
+			ps.setString(11, s.getAe_approval());
+			ps.setString(12, s.getGe_approval());
+			ps.setString(13, s.getSe_approval());
 			
 			boolean success = ps.execute();
 			if (success) {
@@ -70,6 +74,10 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
+				s.setDateSubmitted(rs.getString("dateSubmitted"));
+				s.setAe_approval(rs.getString("ae_approval"));
+				s.setGe_approval(rs.getString("ge_approval"));
+				s.setSe_approval(rs.getString("se_approval"));
 				
 				
 				
@@ -111,6 +119,10 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
+				s.setDateSubmitted(rs.getString("dateSubmitted"));
+				s.setAe_approval(rs.getString("ae_approval"));
+				s.setGe_approval(rs.getString("ge_approval"));
+				s.setSe_approval(rs.getString("se_approval"));
 				
 				
 				stories.add(s);
@@ -127,14 +139,15 @@ public class StoryDAOImpl implements StoryDAO {
 	}
 	
 	@Override
-	public List<Story> getAllPendingStories(String genre, String status) {
+	public List<Story> getAllAsstPendingStories(String genre, String status, String ae_approval) {
 		List<Story> stories = new ArrayList<Story>();
-		String sql = "select * from stories where genre = ? AND submitted = ?;";
+		String sql = "select * from stories where genre = ? AND submitted = ? AND ae_approval = ?;";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, genre);
 			ps.setString(2, status);
+			ps.setString(3, ae_approval);
 			
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
@@ -149,12 +162,48 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
+				s.setDateSubmitted(rs.getString("dateSubmitted"));
+				s.setAe_approval(rs.getString("ae_approval"));
+				s.setGe_approval(rs.getString("ge_approval"));
+				s.setSe_approval(rs.getString("se_approval"));
 				
 				stories.add(s);		
 			}
 			
 			return stories;
 			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Story> getAllPendingHighPriorityStories(String genre, Boolean isHighPriority, String submitted) {
+		List<Story> stories = new ArrayList<Story>();
+		String sql = "select * from stories where genre = ? AND isHighPriority = ? AND submitted = ?;";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, genre);
+			ps.setBoolean(2, isHighPriority);
+			ps.setString(3, submitted);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Story s = new Story();
+				s.setId(rs.getInt("id"));
+				s.setAuthorName(rs.getString("authorName"));
+				s.setTitle(rs.getString("title"));
+				s.setReleaseDate(rs.getString("releaseDate"));
+				s.setTagLine(rs.getString("tagLine"));
+				s.setDescription(rs.getString("description"));
+				s.setSubmitted(rs.getString("submitted"));
+				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
+				s.setStoryType(rs.getString("storyType"));
+				s.setGenre(rs.getString("genre"));
+				
+				stories.add(s);		
+			}
+			return stories;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -184,6 +233,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
+				s.setDateSubmitted(rs.getString("dateSubmitted"));
+				s.setAe_approval(rs.getString("ae_approval"));
+				s.setGe_approval(rs.getString("ge_approval"));
+				s.setSe_approval(rs.getString("se_approval"));
+				
 				
 				
 				return s;
@@ -249,6 +303,8 @@ public class StoryDAOImpl implements StoryDAO {
 		
 		return false;
 	}
+
+	
 
 
 

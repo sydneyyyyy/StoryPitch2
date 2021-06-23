@@ -15,8 +15,9 @@ public interface StoryServices {
 	// GetAllStoriesByAuthor
 	public List<Story> getAllStoriesByAuthor(String authorName);
 	
-	public List<Story> getAllPendingStories(String genre, String status);
+	public List<Story> getAllAsstPendingStories(String genre, String status, String approval);
 	
+	public List<Story> getAllPendingHighPriorityStories(String genre, Boolean isHighPriority, String status);
 	
 	public Story getStoryById(Integer i);
 

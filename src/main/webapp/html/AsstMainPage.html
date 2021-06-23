@@ -13,15 +13,15 @@
             <nav id="nav-container" class="navbar navbar-light" style="background-color: #e3f2fd;">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">Story Pitch Management System</a>
-                    <a class="navbar-light" onclick="viewPendingStories()" href="#">View Pending Stories</a>
+                    <a class="navbar-light" href="#" onclick="viewAsstPendingHighStories()">High Priority Stories</a>
+                    <a class="navbar-light" onclick="viewAsstPendingStories()" href="#">View Pending Stories</a>
                     <a class="navbar-light" onclick="logout()" href="#">Logout</a>
                 </div>
             </nav>
         </div>   
     </header>
-    <section id="pendingHighData"> 
-    </section>
     <section id="pendingData">
+        <div id="message"></div>
     </section>
     <script src="../js/mainPage.js"></script>
 </body>

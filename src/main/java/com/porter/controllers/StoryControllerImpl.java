@@ -74,34 +74,50 @@ public class StoryControllerImpl implements StoryController {
 		return stories;
 
 	}
-
+	
 	@Override
-	public List<Story> getAllPendingStories(HttpServletRequest request, HttpServletResponse response, String genre) throws IOException {
+	public List<Story> getAllAsstPendingStories(HttpServletRequest request, HttpServletResponse response, String genre)
+			throws IOException {
 		String status = "pending";
-		List<Story> stories = ss.getAllPendingStories(genre, status);
+		String ae_approval = "pending";
+		List<Story> stories = ss.getAllAsstPendingStories(genre, status, ae_approval);
 		System.out.println(stories);
 		response.getWriter().append(gson.toJson(stories));
 		return stories;
 	}
 
+	
 //	@Override
-//	public void getAllStoriesByStatus(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//	public List<Story> getAllPendingStories(HttpServletRequest request, HttpServletResponse response, String genre) throws IOException {
 //		String status = "pending";
-//		List<Story> stories = ss.getAllStoriesByStatus(status,);
+//		List<Story> stories = ss.getAllPendingStories(genre, status);
 //		System.out.println(stories);
 //		response.getWriter().append(gson.toJson(stories));
-//
+//		return stories;
 //	}
-
+	
 	@Override
-	public Story getStoryById(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Story> getAllPendingHighPriorityStories(HttpServletRequest request, HttpServletResponse response,
+			String genre) throws IOException {
+		String status = "pending";
+		Boolean isHighPriority = true;
+		List<Story> stories = ss.getAllPendingHighPriorityStories(genre, isHighPriority, status);
+		System.out.println(stories);
+		response.getWriter().append(gson.toJson(stories));
+		return stories;
 	}
+
 
 	@Override
 	public void updateStories(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		// TODO Auto-generated method stub
+		Story s = gson.fromJson(request.getReader(), Story.class);
+		String edRes = "approved";
+//		s.setAe_approval(edRes);
+		int id = s.getId();
+		System.out.println(id);
+		System.out.println(edRes);
+		System.out.println(s);
+//		ss.updateStory(s);
 
 	}
 
@@ -110,5 +126,18 @@ public class StoryControllerImpl implements StoryController {
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public Story getStoryById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		Story s = gson.fromJson(request.getReader(), Story.class);
+		int id = s.getId();
+		s = ss.getStoryById(id);
+		System.out.println(s);
+		return s;
+	}
+
+	
+
+	
 
 }

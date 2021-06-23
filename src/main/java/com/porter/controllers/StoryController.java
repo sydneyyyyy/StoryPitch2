@@ -17,11 +17,12 @@ public interface StoryController {
 	
 	public List<Story> getAllStoriesByAuthor(HttpServletRequest request, HttpServletResponse response, String name) throws IOException;
 	
-	public List<Story> getAllPendingStories(HttpServletRequest request, HttpServletResponse response, String genre) throws IOException;
-	
-//	public void getAllStoriesByStatus(HttpServletRequest request, HttpServletResponse response) throws IOException;
-//	
 	public Story getStoryById(HttpServletRequest request, HttpServletResponse response) throws IOException;
+//	public List<Story> getAllPendingStories(HttpServletRequest request, HttpServletResponse response, String genre) throws IOException;
+//	
+	public List<Story> getAllPendingHighPriorityStories(HttpServletRequest request, HttpServletResponse response, String genre) throws IOException;
+	
+	public List<Story> getAllAsstPendingStories(HttpServletRequest request, HttpServletResponse response, String genre) throws IOException;
 	
 	public void updateStories(HttpServletRequest request, HttpServletResponse response) throws IOException;
 	

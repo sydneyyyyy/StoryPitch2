@@ -31,7 +31,7 @@ function onAuthorSignup() {
     let xhttp = new XMLHttpRequest();
     xhttp.open("POST", url, true);
     xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
             console.log("Created Author");
             window.location.assign('mainPage.html');
         }

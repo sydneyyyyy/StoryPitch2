@@ -42,4 +42,9 @@ public class AuthorServicesImpl implements AuthorServices {
 		return adao.getAuthorByUsername(username);
 	}
 
+	@Override
+	public Author getAuthorByName(String name) {
+		return adao.getAuthorByName(name);
+	}
+
 }

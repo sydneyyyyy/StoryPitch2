@@ -13,6 +13,8 @@ public interface AuthorDAO {
 	public Author getAuthorById(Integer i);
 	
 	public Author getAuthorByUsername(String username);
+	
+	public Author getAuthorByName(String name);
 
 	public Author updateAuthor(Author aChange);
 

@@ -179,6 +179,47 @@ public class StoryDAOImpl implements StoryDAO {
 	}
 	
 	@Override
+	public List<Story> getAllSenPendingStories(String genre, String status, String ae_approval, String ge_approval) {
+		List<Story> stories = new ArrayList<Story>();
+		String sql = "select * from stories where genre = ? AND submitted = ? AND ae_approval = ? AND ge_approval = ?;";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, genre);
+			ps.setString(2, status);
+			ps.setString(3, ae_approval);
+			ps.setString(4, ge_approval);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Story s = new Story();
+				s.setId(rs.getInt("id"));
+				s.setAuthorName(rs.getString("authorName"));
+				s.setTitle(rs.getString("title"));
+				s.setReleaseDate(rs.getString("releaseDate"));
+				s.setTagLine(rs.getString("tagLine"));
+				s.setDescription(rs.getString("description"));
+				s.setSubmitted(rs.getString("submitted"));
+				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
+				s.setStoryType(rs.getString("storyType"));
+				s.setGenre(rs.getString("genre"));
+				s.setDateSubmitted(rs.getString("dateSubmitted"));
+				s.setAe_approval(rs.getString("ae_approval"));
+				s.setGe_approval(rs.getString("ge_approval"));
+				s.setSe_approval(rs.getString("se_approval"));
+				
+				stories.add(s);		
+			}
+			
+			return stories;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
 	public List<Story> getAllPendingStories(String status, String ae_approval, String ge_approval) {
 		List<Story> stories = new ArrayList<Story>();
 		String sql = "select * from stories where submitted = ? AND ae_approval = ? AND ge_approval = ?;";
@@ -349,6 +390,52 @@ public class StoryDAOImpl implements StoryDAO {
 		
 		return false;
 	}
+
+	@Override
+	public List<Story> getAllPendingStoriesByAuthor(String authorName, String submitted) {
+		List<Story> stories = new ArrayList<Story>();
+
+		String sql = "select * from stories where authorName = ? AND submitted = ?;";
+
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, authorName);
+			ps.setString(2, submitted);
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				Story s = new Story();
+				s.setId(rs.getInt("id"));
+				s.setAuthorName(rs.getString("authorName"));
+				s.setTitle(rs.getString("title"));
+				s.setReleaseDate(rs.getString("releaseDate"));
+				s.setTagLine(rs.getString("tagLine"));
+				s.setDescription(rs.getString("description"));
+				s.setSubmitted(rs.getString("submitted"));
+				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
+				s.setStoryType(rs.getString("storyType"));
+				s.setGenre(rs.getString("genre"));
+				s.setDateSubmitted(rs.getString("dateSubmitted"));
+				s.setAe_approval(rs.getString("ae_approval"));
+				s.setGe_approval(rs.getString("ge_approval"));
+				s.setSe_approval(rs.getString("se_approval"));
+				
+				
+				stories.add(s);
+				
+			}
+			
+			return stories;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	
 
 	
 

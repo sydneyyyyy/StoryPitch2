@@ -39,7 +39,6 @@ public class MapServlet extends HttpServlet {
 	private static HttpSession session;
 	private static Author a;
 	private static Editor e;
-//	private static StoryType st;
 	private static Story s;
 
 	private Gson gson = new Gson();
@@ -106,12 +105,13 @@ public class MapServlet extends HttpServlet {
 				a = ac.getAuthorById(request, response);
 				session.setAttribute("loggedInUser", a);
 				System.out.println(a);
+				response.getWriter().append(gson.toJson(s));
 				break;
 			}
 			
 			case "/StoryPitch-2/story/id": {
 				System.out.println("Grabbing story...");
-				s = sc.getStoryById(request, response);
+				s = sc.getStoryById(request, response, s);
 				session.setAttribute("currentStory", s);
 				System.out.println(s);
 				response.setHeader("Access-Control-Allow-Origin", "*");
@@ -144,13 +144,21 @@ public class MapServlet extends HttpServlet {
 				break;
 			}
 			
-			case "/StoryPitch-2/authors/stories": {
-				System.out.println("Getting Author's Stories...");
+			case "/StoryPitch-2/authors/holdStories": {
+				System.out.println("Getting Author's Pending Stories...");
 				a = (Author) session.getAttribute("loggedInUser");
-				sc.getAllStoriesByAuthor(request, response, a.getAuthorName());
+				sc.getAllHoldStoriesByAuthor(request, response, a);
+				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}
 			
+			case "/StoryPitch-2/authors/approvedStories": {
+				System.out.println("Getting Author's approved stories...");
+				a = (Author) session.getAttribute("loggedInUser");
+				sc.getAllApprovedStoriesByAuthor(request, response, a);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
 			
 			case "/StoryPitch-2/asst/stories": {
 				System.out.println("Getting all Assistant Pending Stories...");
@@ -163,16 +171,35 @@ public class MapServlet extends HttpServlet {
 			case "/StoryPitch-2/gen/stories": {
 				System.out.println("Getting all General Pending Stories");
 				e = (Editor) session.getAttribute("loggedInEditor");
-				sc.getAllPendingStories(request, response, e);
+				sc.getAllGenPendingStories(request, response, e);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
+			
+			case "/StoryPitch-2/sen/stories": {
+				System.out.println("Getting all Senior Pending Stories");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				sc.getAllSenPendingStories(request, response, e.getGenre());
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}
 			
 			case "/StoryPitch-2/currentStory": {
 				System.out.println("Grabbing story...");
-				s = sc.getStoryById(request, response);
+//				s = sc.getStoryById(request, response, s);
+//				session.setAttribute("currentStory", s);
+//				System.out.println(s);
+				response.getWriter().append(gson.toJson(s));
+				break;
+			}
+			
+			case "/StoryPitch-2/resubmit" : {
+				System.out.println("Resubmitting story...");
+				s = sc.getStoryById(request, response, s);
 				session.setAttribute("currentStory", s);
 				System.out.println(s);
+				sc.resubmitStory(request, response, s);
+				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}
 			
@@ -180,14 +207,7 @@ public class MapServlet extends HttpServlet {
 				System.out.println("Approving pitch...");
 				e = (Editor) session.getAttribute("loggedInEditor");
 				s = (Story) session.getAttribute("currentStory");
-				
-				if (s.getAe_approval() != "approved") {
-					System.out.println("asst");
-					sc.updateStories(request, response, e, s);
-				} else {
-					System.out.println("oops");
-				}
-//				sc.updateStories(request, response, e);
+				sc.updateStories(request, response, e, s);
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}

@@ -1,4 +1,4 @@
-function onGenMainLoad() {
+function onSenMainLoad() {
     let url = 'http://localhost:8080/StoryPitch-2/edSession';
     let xhttp = new XMLHttpRequest();
     xhttp.open("GET", url, true);
@@ -13,8 +13,8 @@ function onGenMainLoad() {
     }
 }
 
-function viewGenPendingStories() {
-    let url = 'http://localhost:8080/StoryPitch-2/gen/stories';
+function viewSenPendingStories() {
+    let url = 'http://localhost:8080/StoryPitch-2/sen/stories';
     let xhttp = new XMLHttpRequest();
     xhttp.open('GET', url, true);
     xhttp.send();
@@ -121,21 +121,15 @@ function viewGenPendingStories() {
                     tdSeAppr.setAttribute('id', 'seApp');
                     tr.appendChild(tdSeAppr);
     
-    
-                    
                     storyTable.appendChild(tr);
     
                 }
                 dataSection.appendChild(tableHead);
                 dataSection.appendChild(storyTable);
             } else {
-                
                 dataSection.innerHTML = "There are no pitches that need your attention!"
             
             }
-
-           
-
         }
     }
 }

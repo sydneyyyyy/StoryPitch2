@@ -29,8 +29,6 @@ public class StoryControllerImpl implements StoryController {
 	StoryType st = new StoryType();
 	
 	
-//	Author a = new Author();
-	
 	@Override
 	public Story createStory(HttpServletRequest request, HttpServletResponse response, Author a) throws IOException {
 		Story s = gson.fromJson(request.getReader(), Story.class);
@@ -54,7 +52,6 @@ public class StoryControllerImpl implements StoryController {
 			ss.updateStory(s);
 		}
 		
-		
 		response.getWriter().append(gson.toJson(s));
 		return s;
 	}
@@ -68,12 +65,57 @@ public class StoryControllerImpl implements StoryController {
 	}
 
 	@Override
-	public List<Story> getAllStoriesByAuthor(HttpServletRequest request, HttpServletResponse response, String name) throws IOException {
-		List<Story> stories = ss.getAllStoriesByAuthor(name);
+	public Story getStoryById(HttpServletRequest request, HttpServletResponse response, Story s) throws IOException {
+		int storyId = s.getId();
+		System.out.println(storyId);
+		s = ss.getStoryById(storyId);
+		return s;
+	}
+	
+	@Override
+	public List<Story> getAllStoriesByAuthor(HttpServletRequest request, HttpServletResponse response, Author a) throws IOException {
+		String status = "pending";
+		String status2 = "on-hold";
+		String authorName = a.getAuthorName();
+		System.out.println(authorName);
+		List<Story> stories = ss.getAllStoriesByAuthor(authorName);
+		System.out.println(stories);
+//		for (Story s : stories) {
+//			System.out.println(s);
+//			if (s.getSubmitted().equalsIgnoreCase(status)) {
+//				System.out.println("hi");
+//				ss.
+//			} else {
+//				System.out.println("else");
+//			}
+//		}
+//		response.getWriter().append(gson.toJson(stories));
+		return null;
+
+	}
+	
+	@Override
+	public List<Story> getAllHoldStoriesByAuthor(HttpServletRequest request, HttpServletResponse response, Author a)
+			throws IOException {
+		String submitted = "on-hold";
+		String authorName = a.getAuthorName();
+		System.out.println(authorName);
+		List<Story> stories = ss.getAllPendingStoriesByAuthor(authorName, submitted);
 		System.out.println(stories);
 		response.getWriter().append(gson.toJson(stories));
 		return stories;
-
+	}
+	
+	@Override
+	public List<Story> getAllApprovedStoriesByAuthor(HttpServletRequest request, HttpServletResponse response, Author a)
+			throws IOException {
+		String submitted = "approved";
+		String authorName = a.getAuthorName();
+		System.out.println(authorName);
+		List<Story> stories = ss.getAllPendingStoriesByAuthor(authorName, submitted);
+		System.out.println(stories);
+		response.getWriter().append(gson.toJson(stories));
+		return stories;
 	}
 	
 	@Override
@@ -88,7 +130,7 @@ public class StoryControllerImpl implements StoryController {
 	}
 	
 	@Override
-	public List<Story> getAllPendingStories(HttpServletRequest request, HttpServletResponse response, Editor e) throws IOException {
+	public List<Story> getAllGenPendingStories(HttpServletRequest request, HttpServletResponse response, Editor e) throws IOException {
 		String status = "pending";
 		String ae_approval = "approved";
 		String ge_approval = "pending";
@@ -97,46 +139,64 @@ public class StoryControllerImpl implements StoryController {
 		response.getWriter().append(gson.toJson(stories));
 		return stories;
 	}
-
 	
-//	@Override
-//	public List<Story> getAllPendingHighPriorityStories(HttpServletRequest request, HttpServletResponse response,
-//			String genre) throws IOException {
-//		String status = "pending";
-//		Boolean isHighPriority = true;
-//		List<Story> stories = ss.getAllPendingHighPriorityStories(genre, isHighPriority, status);
-//		System.out.println(stories);
-//		response.getWriter().append(gson.toJson(stories));
-//		return stories;
-//	}
+	@Override
+	public List<Story> getAllSenPendingStories(HttpServletRequest request, HttpServletResponse response, String genre)
+			throws IOException {
+		String status = "pending";
+		String ae_approval = "approved";
+		String ge_approval = "approved";
+		List<Story> stories = ss.getAllSenPendingStories(genre, status, ae_approval, ge_approval);
+		System.out.println(stories);
+		response.getWriter().append(gson.toJson(stories));
+		return stories;
+	}
 
 
 	@Override
 	public void updateStories(HttpServletRequest request, HttpServletResponse response, Editor e, Story s) throws IOException {
-//		s = gson.fromJson(request.getReader(), Story.class);
 		System.out.println(s);
-		System.out.println(e.getJobTitle());
+		String general = "General";
+		String asst = "Assistant";
+		String sen = "Senior";
 		String edRes = "approved";
-		if (e.getJobTitle() != "General" && e.getJobTitle() !="Senior") {
-			System.out.println("asst");
+		String author = s.getAuthorName();
+		String story = s.getStoryType();
+		if (e.getJobTitle().equalsIgnoreCase(general)) {
+			System.out.println("Gen");
+			s.setGe_approval(edRes);
+			ss.updateStory(s);
+		} else if (e.getJobTitle().equalsIgnoreCase(asst)){
+			System.out.println("Asst");
 			s.setAe_approval(edRes);
 			ss.updateStory(s);
-		} else if (e.getJobTitle() != "Senior" && e.getJobTitle() != "Assistant") {
-			System.out.println("gen");
-		} else if (e.getJobTitle() != "Assistant" && e.getJobTitle() != "General") {
-			System.out.println("sen");
+		} else if (e.getJobTitle().equalsIgnoreCase(sen)) {
+			System.out.println("Senior");
+			s.setSe_approval(edRes);
+			s.setSubmitted("approved");
+			ss.updateStory(s);
+			Author a = as.getAuthorByName(author);
+			StoryType st = sts.getStoryTypeByName(story);
+			int auPoints = a.getPoints();
+			int stPoints = st.getPoints();
+			int newPoints = stPoints + auPoints;
+			System.out.println(newPoints);
+			System.out.println(a);
+			a.setPoints(newPoints);
+			System.out.println(a);
+			as.updateAuthor(a);
+			System.out.println(st);
+			
 		}
-//		s.setGe_approval(edRes);
-//		System.out.println(s);
-//		ss.updateStory(s);
-//		String edRes = "approved";
-		
-//		int id = s.getId();
-//		System.out.println(id);
-//		System.out.println(edRes);
-//		System.out.println(s);
-//		ss.updateStory(s);
-
+	}
+	
+	@Override
+	public Story resubmitStory(HttpServletRequest request, HttpServletResponse response, Story s) throws IOException {
+		String submitted = "pending";
+		s.setSubmitted(submitted);
+		System.out.println(s);
+		response.getWriter().append(gson.toJson(s));
+		return s;
 	}
 
 	@Override
@@ -145,15 +205,17 @@ public class StoryControllerImpl implements StoryController {
 
 	}
 
-	@Override
-	public Story getStoryById(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		Story s = gson.fromJson(request.getReader(), Story.class);
-		int id = s.getId();
-		s = ss.getStoryById(id);
-		System.out.println(s);
-		return s;
-	}
+	
 
+	
+
+
+
+	
+
+	
+
+	
 	
 
 	

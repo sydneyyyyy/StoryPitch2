@@ -7,13 +7,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     <title>Story Pitch Management System</title>
 </head>
-<body onload="onMainLoad()">
+<body onload="onAutMainLoad()">
     <header id="header">
         <div>
             <nav id="nav-container" class="navbar navbar-light" style="background-color: #e3f2fd;">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">Story Pitch Management System</a>
-                    <a class="navbar-light" onclick="viewStories()" href="#">View Stories</a>
+                    <a class="navbar-light" onclick="viewStoriesHold()" href="#">View Stories On Hold</a>
+                    <a class="navbar-light" onclick="viewStoriesApproved()" href="#">View Approved Stories</a>
                     <a class="navbar-light" onclick="submitStory()" href="#">Submit a Pitch</a>
                     <a class="navbar-light" onclick="logout()" href="#">Logout</a>
                 </div>
@@ -23,6 +24,6 @@
     <section id="storyData"> 
 
     </section>
-    <script src="../js/mainPage.js"></script>
+    <script src="../js/AuthorMainPage.js"></script>
 </body>
 </html>

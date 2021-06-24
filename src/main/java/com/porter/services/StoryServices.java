@@ -6,27 +6,24 @@ import com.porter.models.Story;
 
 public interface StoryServices {
 
-	// Create Story
 	public Story createStory(Story s);
 
-	// GetAllStories
 	public List<Story> getAllStories();
 
-	// GetAllStoriesByAuthor
 	public List<Story> getAllStoriesByAuthor(String authorName);
+	
+	public List<Story> getAllPendingStoriesByAuthor(String authorName, String submitted);
 	
 	public List<Story> getAllPendingStories(String status, String ae_approval, String ge_approval);
 	
 	public List<Story> getAllAsstPendingStories(String genre, String status, String approval);
 	
-//	public List<Story> getAllPendingHighPriorityStories(String genre, Boolean isHighPriority, String status);
-//	
+	public List<Story> getAllSenPendingStories(String genre, String status, String ae_approval, String ge_approval);
+	
 	public Story getStoryById(Integer i);
 
-	// UpdateStory
 	public boolean updateStory(Story sChange);
 
-	// RemoveStory
 	public boolean removeStory(Story s);
 
 }

@@ -8,7 +8,7 @@ public interface StoryServices {
 
 	public Story createStory(Story s);
 
-	public List<Story> getAllStories();
+	public List<Story> getAllPendingStories(String status);
 
 	public List<Story> getAllStoriesByAuthor(String authorName);
 	
@@ -18,7 +18,13 @@ public interface StoryServices {
 	
 	public List<Story> getAllAsstPendingStories(String genre, String status, String approval);
 	
+	public List<Story> getAllAsstPriorityStories(String genre, String status, Boolean priority, String ae_approval);
+	
+	public List<Story> getAllGenPriorityStories(String status, Boolean priority, String ae_approval, String ge_approval);
+	
 	public List<Story> getAllSenPendingStories(String genre, String status, String ae_approval, String ge_approval);
+	
+	public List<Story> getAllSenPriorityStories(String genre, Boolean priority, String status, String ae_approval, String ge_approval, String se_approval);
 	
 	public Story getStoryById(Integer i);
 

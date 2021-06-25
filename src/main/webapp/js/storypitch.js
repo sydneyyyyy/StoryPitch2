@@ -16,9 +16,6 @@ function onAuthorSignup() {
     let usernameInput = document.getElementById('username').value;
     let passwordInput = document.getElementById('password').value;
 
-    console.log(nameInput);
-    console.log(usernameInput);
-    console.log(passwordInput);
 
     let author = {
         name: nameInput,
@@ -33,7 +30,7 @@ function onAuthorSignup() {
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             console.log("Created Author");
-            window.location.assign('mainPage.html');
+            routePage();
         }
     };
 
@@ -41,7 +38,7 @@ function onAuthorSignup() {
 }
 
 function AutLoginLoad() {
-    // window.location.href="AuthorMainPage.html";
+    window.location.href="AuthorMainPage.html";
 }
 
 function routePage() {

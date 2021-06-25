@@ -73,6 +73,7 @@ public class MapServlet extends HttpServlet {
 				e = (Editor) session.getAttribute("loggedInEditor");
 				System.out.println(e);
 				response.getWriter().append(gson.toJson(e));
+				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}
 			
@@ -89,6 +90,15 @@ public class MapServlet extends HttpServlet {
 				System.out.println(authors);
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				response.getWriter().append(gson.toJson(authors));
+				break;
+			}
+			
+			case "/StoryPitch-2/authors/stories": {
+				System.out.println("Getting all pending stories...");
+				a = (Author) session.getAttribute("loggedInUser");
+				List<Story> stories = sc.getAllStoriesByAuthor(request, response, a);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				response.getWriter().append(gson.toJson(stories));
 				break;
 			}
 			
@@ -160,10 +170,34 @@ public class MapServlet extends HttpServlet {
 				break;
 			}
 			
+			case "/StoryPitch-2/pendingStories": {
+				System.out.println("Getting all Pending stories...");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				sc.getAllPendingStories(request, response);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
+			
+			case "/StoryPitch-2/asst/priorityStories": {
+				System.out.println("Getting all priority stories...");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				sc.getAllAsstPriorityStories(request, response, e.getGenre());
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
+			
 			case "/StoryPitch-2/asst/stories": {
 				System.out.println("Getting all Assistant Pending Stories...");
 				e = (Editor) session.getAttribute("loggedInEditor");
 				sc.getAllAsstPendingStories(request, response, e.getGenre());
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
+			
+			case "/StoryPitch-2/gen/priorityStories": {
+				System.out.println("Getting all General priority stories...");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				sc.getAllGenPriorityStories(request, response);
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}
@@ -184,11 +218,19 @@ public class MapServlet extends HttpServlet {
 				break;
 			}
 			
+			case "/StoryPitch-2/sen/priorityStories": {
+				System.out.println("Getting all Senior priority stories...");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				sc.getAllSenPriorityStories(request, response, e.getGenre());
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
+			
 			case "/StoryPitch-2/currentStory": {
 				System.out.println("Grabbing story...");
-//				s = sc.getStoryById(request, response, s);
-//				session.setAttribute("currentStory", s);
-//				System.out.println(s);
+				s = sc.getStoryById(request, response, s);
+				session.setAttribute("currentStory", s);
+				System.out.println(s);
 				response.getWriter().append(gson.toJson(s));
 				break;
 			}
@@ -212,21 +254,25 @@ public class MapServlet extends HttpServlet {
 				break;
 			}
 			
-//			case "/StoryPitch-2/asst/highStories": {
-//				System.out.println("Getting all Assistant High Priority Stories...");
-//				e = (Editor) session.getAttribute("loggedInEditor");
-//				sc.getAllPendingHighPriorityStories(request, response, e.getGenre());
-//				response.setHeader("Access-Control-Allow-Origin", "*");
-//				break;
-//			}
+			case "/StoryPitch-2/rejectStory": {
+				System.out.println("Rejecting pitch...");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				s = (Story) session.getAttribute("currentStory");
+				sc.rejectStory(request, response, e, s);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
 			
-//			case "/StoryPitch-2/senEditor/pendingStories": {
-//				System.out.println("Getting all pending stories...");
-//				e = (Editor) session.getAttribute("loggedInEditor");
-//				sc.getAllPendingStories(request, response, e.getGenre());
-//				response.setHeader("Access-Control-Allow-Origin", "*");
-//				break;
-//			}
+			case "/StoryPitch-2/submitChange": {
+				System.out.println("submitting change...");
+				Story sChange = gson.fromJson(request.getReader(), Story.class);
+				System.out.println(sChange);
+				s = (Story) session.getAttribute("currentStory");
+				System.out.println(s);
+				sc.senUpdateStory(request, response, sChange, s);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
 			
 			case "/StoryPitch-2/newStory": {
 				System.out.println("Creating story...");

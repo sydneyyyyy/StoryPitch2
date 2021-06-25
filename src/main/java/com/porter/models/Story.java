@@ -1,12 +1,11 @@
 package com.porter.models;
 
+import java.time.LocalDate;
+
 public class Story {
 
-	// instance variables
-	// Constructors
-	// Getters and Setters
-	// toString()
-
+	LocalDate currDate = LocalDate.now();
+	
 	private Integer id;
 	private String authorName;
 	private String title;
@@ -17,7 +16,7 @@ public class Story {
 	private boolean isHighPriority = false;
 	private String storyType; 
 	private String genre;
-	private String dateSubmitted;
+	private String dateSubmitted = currDate.toString();;
 	private String ae_approval = "pending";
 	private String ge_approval = "pending";
 	private String se_approval = "pending";

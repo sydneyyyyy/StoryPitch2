@@ -15,7 +15,7 @@ function onAutMainLoad() {
     }
 }
 
-function viewStories() {
+function viewStoriesPending() {
 
     let url = 'http://localhost:8080/StoryPitch-2/authors/stories';
     let xhttp = new XMLHttpRequest();
@@ -26,48 +26,114 @@ function viewStories() {
         dataSection.innerHTML = '';
 
         if (xhttp.readyState == 4 && xhttp.status == 200) {
+            console.log("working...");
             let res = xhttp.responseText;
             res = JSON.parse(res);
+            console.log(res);
 
-            let storyTable = document.createElement('table');
-            storyTable.id = 'storyTable';
+            if (res.length != 0) {
 
-            let thRow = document.createElement('tr')
-            let tHeaders = ['Title', 'Description', 'Author', 'Status'];
-            for (let h of tHeaders) {
-                let th = document.createElement('th');
-                th.innerHTML = h;
-                thRow.appendChild(th);
+                let storyTable = document.createElement('table');
+                storyTable.id = 'storyTable';
+    
+                let tableHead = document.createElement('h3');
+                tableHead.innerHTML="All of Your Stories";
+    
+                let thRow = document.createElement('tr')
+                
+    
+                let tHeaders = ['id', 'Author', 'Title', 'Release-Date', 'Tag-Line', 
+                'Description', 'Status' , 'Story-Type', 'Genre', 'Date-Submitted', 
+                'Ae-Approved', 'Ge-Approved', 'Se-Approved'];
+                for (let h of tHeaders) {
+                    let th = document.createElement('th');
+                    th.innerHTML = h;
+                    thRow.appendChild(th);
+                }
+    
+                storyTable.append(thRow);
+                
+                for (let story of res) {
+                    
+                    let tr = document.createElement('tr');
+                    tr.onclick = () => {
+                        updateStory(story);
+                    }
+    
+                    let tdId = document.createElement('td');
+                    tdId.innerHTML = story.id;
+                    tdId.setAttribute('id', 'storyId');
+                    tr.appendChild(tdId);
+                    
+                    let tdAuthor = document.createElement('td');
+                    tdAuthor.innerHTML = story.authorName;
+                    tdAuthor.setAttribute('id', 'author');
+                    tr.appendChild(tdAuthor);
+    
+                    let tdTitle = document.createElement('td');
+                    tdTitle.innerHTML = story.title;
+                    tdTitle.setAttribute('id', 'title');
+                    tr.appendChild(tdTitle);
+    
+                    let tdDate = document.createElement('td');
+                    tdDate.innerHTML = story.releaseDate;
+                    tdDate.setAttribute('id', 'releaseDate');
+                    tr.appendChild(tdDate);
+    
+                    let tdTag = document.createElement('td');
+                    tdTag.innerHTML = story.tagLine;
+                    tdTag.setAttribute('id', 'tagLine');
+                    tr.appendChild(tdTag);
+    
+                    let tdDes = document.createElement('td');
+                    tdDes.innerHTML = story.description;
+                    tdDes.setAttribute('id', 'description');
+                    tr.appendChild(tdDes);
+    
+                    let tdStatus = document.createElement('td');
+                    tdStatus.innerHTML = story.submitted;
+                    tdStatus.setAttribute('id', 'status');
+                    tr.appendChild(tdStatus);
+        
+                    let tdSt = document.createElement('td');
+                    tdSt.innerHTML = story.storyType;
+                    tdSt.setAttribute('id', 'storyType');
+                    tr.appendChild(tdSt);
+    
+                    let tdGenre = document.createElement('td');
+                    tdGenre.innerHTML = story.genre;
+                    tdGenre.setAttribute('id', 'genre');
+                    tr.appendChild(tdGenre);
+    
+                    let tdDateSub = document.createElement('td');
+                    tdDateSub.innerHTML = story.dateSubmitted;
+                    tdDateSub.setAttribute('id', 'dateSub');
+                    tr.appendChild(tdDateSub);
+    
+                    let tdAeAppr = document.createElement('td');
+                    tdAeAppr.innerHTML = story.ae_approval;
+                    tdAeAppr.setAttribute('id', 'aeApp');
+                    tr.appendChild(tdAeAppr);
+    
+                    let tdGeAppr = document.createElement('td');
+                    tdGeAppr.innerHTML = story.ge_approval;
+                    tdGeAppr.setAttribute('id', 'geApp');
+                    tr.appendChild(tdGeAppr);
+    
+                    let tdSeAppr = document.createElement('td');
+                    tdSeAppr.innerHTML = story.se_approval;
+                    tdSeAppr.setAttribute('id', 'seApp');
+                    tr.appendChild(tdSeAppr);
+    
+                    storyTable.appendChild(tr);
+    
+                }
+                dataSection.appendChild(tableHead);
+                dataSection.appendChild(storyTable);
+            } else {
+                dataSection.innerHTML = "You have not submitted stories yet!";
+            
             }
-
-            storyTable.append(thRow);
-
-            for (let story of res) {
-                // Story title
-                let tr = document.createElement('tr');
-                let tdName = document.createElement('td');
-                tdName.innerHTML = story.title;
-                tr.appendChild(tdName);
-
-                // Story Description
-                let tdDes = document.createElement('td');
-                tdDes.innerHTML = story.description;
-                tr.appendChild(tdDes);
-
-                // Story Author
-                let tdAuthor = document.createElement('td');
-                tdAuthor.innerHTML = story.authorName;
-                tr.appendChild(tdAuthor);
-
-                // Story Status
-                let tdStatus = document.createElement('td');
-                tdStatus.innerHTML = story.submitted;
-                tr.appendChild(tdStatus);
-
-                storyTable.appendChild(tr);
-            }
-
-            dataSection.appendChild(storyTable);
         }
     }
 }
@@ -615,16 +681,16 @@ function onViewStoryLoad() {
             storyTable.appendChild(tr);  
             storySection.appendChild(storyTable);
 
-            let approveButton = document.createElement('button');
-            approveButton.setAttribute('class', 'btn btn-primary');
-            approveButton.setAttribute('type', 'submit');
-            approveButton.setAttribute('value', 'approved');
-            approveButton.innerHTML = 'Approve';
-            approveButton.onclick = () => {
-                approveStory(res);
+            let reButton = document.createElement('button');
+            reButton.setAttribute('class', 'btn btn-primary');
+            reButton.setAttribute('type', 'submit');
+            reButton.setAttribute('value', 'pending');
+            reButton.innerHTML = 'ReSubmit';
+            reButton.onclick = () => {
+                resubmitStory(res);
             }
         
-            storySection.appendChild(approveButton);
+            storySection.appendChild(reButton);
 
         }
     }
@@ -638,6 +704,9 @@ function resubmitStory(res) {
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {  
             console.log("resubmitting...");
+        } else {
+            let info = document.getElementById('storyData');
+            info.innerHTML = "You do not have enough points for this re-submission!"
         }
     };
 
@@ -654,4 +723,14 @@ function resubmitStory(res) {
     // }        
 }
 
-// window.location.href="SubmitStory.html";
+function logout() {
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('GET', 'http://localhost:8080/StoryPitch-2/logout', true);
+    xhttp.send();
+    xhttp.onreadystatechange = function() {
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            console.log("logout");
+            window.location.href="landingPage.html";
+        }
+    }
+}

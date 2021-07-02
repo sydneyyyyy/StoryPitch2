@@ -56,8 +56,8 @@ public class StoryServicesImpl implements StoryServices {
 	}
 
 	@Override
-	public List<Story> getAllSenPendingStories(String genre, String status, String ae_approval, String ge_approval) {
-		return sdao.getAllSenPendingStories(genre, status, ae_approval, ge_approval);
+	public List<Story> getAllSenPendingStories(String genre, String status, Boolean priority, String ae_approval, String ge_approval) {
+		return sdao.getAllSenPendingStories(genre, status, priority, ae_approval, ge_approval);
 	}
 
 	@Override
@@ -74,6 +74,11 @@ public class StoryServicesImpl implements StoryServices {
 	public List<Story> getAllSenPriorityStories(String genre, Boolean priority, String status, String ae_approval, String ge_approval,
 			String se_approval) {
 		return sdao.getAllSenPriorityStories(genre, status, priority, ae_approval, ge_approval, se_approval);
+	}
+
+	@Override
+	public List<Story> getAllPendingDrafts(String genre, String aeDraft_approval, String geDraft_approval, String seDraft_approval) {
+		return sdao.getAllPendingDrafts(genre, aeDraft_approval, geDraft_approval, seDraft_approval);
 	}
 
 	

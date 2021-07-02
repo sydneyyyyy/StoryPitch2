@@ -22,9 +22,11 @@ public interface StoryServices {
 	
 	public List<Story> getAllGenPriorityStories(String status, Boolean priority, String ae_approval, String ge_approval);
 	
-	public List<Story> getAllSenPendingStories(String genre, String status, String ae_approval, String ge_approval);
+	public List<Story> getAllSenPendingStories(String genre, String status, Boolean priority, String ae_approval, String ge_approval);
 	
 	public List<Story> getAllSenPriorityStories(String genre, Boolean priority, String status, String ae_approval, String ge_approval, String se_approval);
+	
+	public List<Story> getAllPendingDrafts(String genre, String aeDraft_approval, String geDraft_approval, String seDraft_approval);
 	
 	public Story getStoryById(Integer i);
 

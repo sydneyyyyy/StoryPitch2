@@ -14,6 +14,131 @@ function onGenMainLoad() {
     }
 }
 
+function viewPendingDrafts() {
+    console.log("pending drafts...");
+    let url = 'http://localhost:8080/StoryPitch-2/pendingDraft';
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url, true);
+    xhttp.send();
+    xhttp.onreadystatechange = function() {
+        let dataSection = document.getElementById('pendingData');
+        dataSection.innerHTML = '';
+
+        if (xhttp.readyState == 4 && xhttp.status == 200) {
+            let res = xhttp.responseText;
+            res = JSON.parse(res);
+            console.log(res);
+
+            if (res.length != 0) {
+                let storyTable = document.createElement('table');
+                storyTable.id = 'storyTable';
+
+                let thRow = document.createElement('tr')
+                
+
+                let tHeaders = ['id', 'Author', 'Title', 'Release-Date', 'Tag-Line', 
+                'Description', 'Status' , 'Story-Type', 'Genre', 'Date-Submitted', 
+                'Draft', 'AE_DraftApp', 'GE DraftApp', 'SE_DraftApp'];
+                for (let h of tHeaders) {
+                    let th = document.createElement('th');
+                    th.innerHTML = h;
+                    thRow.appendChild(th);
+                }
+
+                storyTable.append(thRow);
+                
+                for (let story of res) {
+                    
+                    let tr = document.createElement('tr');
+                    // tr.setAttribute('onclick', 'updateStory()');
+                    tr.onclick = () => {
+                        updateStory(story);
+                    }
+
+                    let tdId = document.createElement('td');
+                    tdId.innerHTML = story.id;
+                    tdId.setAttribute('id', 'storyId');
+                    tr.appendChild(tdId);
+                    
+                    let tdAuthor = document.createElement('td');
+                    tdAuthor.innerHTML = story.authorName;
+                    tdAuthor.setAttribute('id', 'author');
+                    tr.appendChild(tdAuthor);
+
+                    let tdTitle = document.createElement('td');
+                    tdTitle.innerHTML = story.title;
+                    tdTitle.setAttribute('id', 'title');
+                    tr.appendChild(tdTitle);
+
+                    let tdDate = document.createElement('td');
+                    tdDate.innerHTML = story.releaseDate;
+                    tdDate.setAttribute('id', 'releaseDate');
+                    tr.appendChild(tdDate);
+
+                    let tdTag = document.createElement('td');
+                    tdTag.innerHTML = story.tagLine;
+                    tdTag.setAttribute('id', 'tagLine');
+                    tr.appendChild(tdTag);
+
+                    let tdDes = document.createElement('td');
+                    tdDes.innerHTML = story.description;
+                    tdDes.setAttribute('id', 'description');
+                    tr.appendChild(tdDes);
+
+                    let tdStatus = document.createElement('td');
+                    tdStatus.innerHTML = story.pitchStatus;
+                    tdStatus.setAttribute('id', 'status');
+                    tr.appendChild(tdStatus);
+    
+                    let tdSt = document.createElement('td');
+                    tdSt.innerHTML = story.storyType;
+                    tdSt.setAttribute('id', 'storyType');
+                    tr.appendChild(tdSt);
+
+                    let tdGenre = document.createElement('td');
+                    tdGenre.innerHTML = story.genre;
+                    tdGenre.setAttribute('id', 'genre');
+                    tr.appendChild(tdGenre);
+
+                    let tdDateSub = document.createElement('td');
+                    tdDateSub.innerHTML = story.dateSubmitted;
+                    tdDateSub.setAttribute('id', 'dateSub');
+                    tr.appendChild(tdDateSub);
+
+                    let tdDraft = document.createElement('td');
+                    tdDraft.innerHTML = story.storyDraft;
+                    tdDraft.setAttribute('id', 'draft');
+                    tr.appendChild(tdDraft);
+
+                    let tdAeDraft = document.createElement('td');
+                    tdAeDraft.innerHTML = story.aeDraft_Approval;
+                    tdAeDraft.setAttribute('id', 'aeApp');
+                    tr.appendChild(tdAeDraft);
+
+                    let tdGeDraft = document.createElement('td');
+                    tdGeDraft.innerHTML = story.geDraft_Approval;
+                    tdGeDraft.setAttribute('id', 'geApp');
+                    tr.appendChild(tdGeDraft);
+
+                    let tdSeDraft = document.createElement('td');
+                    tdSeDraft.innerHTML = story.seDraft_Approval;
+                    tdSeDraft.setAttribute('id', 'seApp');
+                    tr.appendChild(tdSeDraft);
+
+                    storyTable.appendChild(tr);  
+                } 
+                dataSection.appendChild(storyTable);
+            } else {
+                dataSection.innerHTML = "There are no Drafts that need your attention!"
+                let a = document.createElement('a');
+                a.setAttribute('onclick', 'getHighPriorityStories()');
+                a.innerHTML = "   <-- Go Back";
+                dataSection.appendChild(a); 
+            }  
+        }
+    }
+}
+
 function getHighPriorityStories() {
     let xhttp = new XMLHttpRequest();
     xhttp.open("GET", "http://localhost:8080/StoryPitch-2/gen/priorityStories", true);
@@ -85,7 +210,7 @@ function getHighPriorityStories() {
                     tr.appendChild(tdDes);
 
                     let tdStatus = document.createElement('td');
-                    tdStatus.innerHTML = story.submitted;
+                    tdStatus.innerHTML = story.pitchStatus;
                     tdStatus.setAttribute('id', 'status');
                     tr.appendChild(tdStatus);
     
@@ -124,6 +249,7 @@ function getHighPriorityStories() {
                 dataSection.appendChild(storyTable);
             } else {
                 dataSection.innerHTML = "There are no priority stories that need your attention!";
+                
             }
         }
     }
@@ -144,7 +270,7 @@ function viewGenPendingStories() {
             res = JSON.parse(res);
             console.log(res);
 
-            if (res.length != null) {
+            if (res.length != 0) {
 
                 let storyTable = document.createElement('table');
                 storyTable.id = 'storyTable';
@@ -204,7 +330,7 @@ function viewGenPendingStories() {
                     tr.appendChild(tdDes);
     
                     let tdStatus = document.createElement('td');
-                    tdStatus.innerHTML = story.submitted;
+                    tdStatus.innerHTML = story.pitchStatus;
                     tdStatus.setAttribute('id', 'status');
                     tr.appendChild(tdStatus);
        
@@ -248,13 +374,20 @@ function viewGenPendingStories() {
             } else {
                 
                 dataSection.innerHTML = "There are no pitches that need your attention!"
-            
+                let a = document.createElement('a');
+                a.setAttribute('onclick', 'getHighPriorityStories()');
+                a.innerHTML = "   <-- Go Back";
+                dataSection.appendChild(a); 
             }
 
            
 
         }
     }
+}
+
+function back() {
+    getHighPriorityStories();
 }
 
 function updateStory(story) {

@@ -18,7 +18,7 @@ public class StoryDAOImpl implements StoryDAO {
 	@Override
 	public Story createStory(Story s) {
 
-		String sql = "insert into stories values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning *;";
+		String sql = "insert into stories values (default, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) returning *;";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -27,7 +27,7 @@ public class StoryDAOImpl implements StoryDAO {
 			ps.setString(3, s.getReleaseDate());
 			ps.setString(4, s.getTagLine());
 			ps.setString(5, s.getDescription());
-			ps.setString(6, s.getSubmitted());
+			ps.setString(6, s.getPitchStatus());
 			ps.setBoolean(7, s.getIsHighPriority());
 			ps.setString(8, s.getStoryType());
 			ps.setString(9, s.getGenre());
@@ -35,6 +35,11 @@ public class StoryDAOImpl implements StoryDAO {
 			ps.setString(11, s.getAe_approval());
 			ps.setString(12, s.getGe_approval());
 			ps.setString(13, s.getSe_approval());
+			ps.setString(14, s.getStoryDraft());
+			ps.setString(15, s.getAeDraft_Approval());
+			ps.setString(16, s.getGeDraft_Approval());
+			ps.setString(17, s.getSeDraft_Approval());
+			ps.setString(18, s.getDraftStatus());
 			
 			boolean success = ps.execute();
 			if (success) {
@@ -56,7 +61,7 @@ public class StoryDAOImpl implements StoryDAO {
 
 		List<Story> stories = new ArrayList<Story>();
 
-		String sql = "select * from stories where submitted = ?;";
+		String sql = "select * from stories where pitchStatus = ?;";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -72,7 +77,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -80,8 +85,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
-				
-				
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
 				
 				stories.add(s);
 				
@@ -117,7 +125,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -125,6 +133,12 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
+				
 				
 				
 				stories.add(s);
@@ -143,7 +157,7 @@ public class StoryDAOImpl implements StoryDAO {
 	@Override
 	public List<Story> getAllAsstPendingStories(String genre, String status, String ae_approval) {
 		List<Story> stories = new ArrayList<Story>();
-		String sql = "select * from stories where genre = ? AND submitted = ? AND ae_approval = ?;";
+		String sql = "select * from stories where genre = ? AND pitchStatus = ? AND ae_approval = ?;";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -160,7 +174,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -168,6 +182,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
 				
 				stories.add(s);		
 			}
@@ -183,7 +202,7 @@ public class StoryDAOImpl implements StoryDAO {
 	@Override
 	public List<Story> getAllAsstPriorityStories(String genre, String status, Boolean priority, String ae_approval) {
 		List<Story> stories = new ArrayList<Story>();
-		String sql = "select * from stories where genre = ? AND submitted = ? AND isHighPriority = ? AND ae_approval = ?;";
+		String sql = "select * from stories where genre = ? AND pitchStatus = ? AND isHighPriority = ? AND ae_approval = ?;";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -201,7 +220,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -209,6 +228,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
 				
 				stories.add(s);		
 			}
@@ -224,7 +248,7 @@ public class StoryDAOImpl implements StoryDAO {
 	@Override
 	public List<Story> getAllGenPriorityStories(String status, Boolean priority, String ae_approval, String ge_approval) {
 		List<Story> stories = new ArrayList<Story>();
-		String sql = "select * from stories where submitted = ? AND isHighPriority = ? AND ae_approval = ? AND ge_approval = ?;";
+		String sql = "select * from stories where pitchStatus = ? AND isHighPriority = ? AND ae_approval = ? AND ge_approval = ?;";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -242,7 +266,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -250,6 +274,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
 				
 				stories.add(s);		
 			}
@@ -263,16 +292,17 @@ public class StoryDAOImpl implements StoryDAO {
 	}
 	
 	@Override
-	public List<Story> getAllSenPendingStories(String genre, String status, String ae_approval, String ge_approval) {
+	public List<Story> getAllSenPendingStories(String genre, String status, Boolean priority, String ae_approval, String ge_approval) {
 		List<Story> stories = new ArrayList<Story>();
-		String sql = "select * from stories where genre = ? AND submitted = ? AND ae_approval = ? AND ge_approval = ?;";
+		String sql = "select * from stories where genre = ? AND pitchStatus = ? AND isHighPriority = ? AND ae_approval = ? AND ge_approval = ?;";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, genre);
 			ps.setString(2, status);
-			ps.setString(3, ae_approval);
-			ps.setString(4, ge_approval);
+			ps.setBoolean(3, priority);
+			ps.setString(4, ae_approval);
+			ps.setString(5, ge_approval);
 			
 			ResultSet rs = ps.executeQuery();
 			while(rs.next()) {
@@ -283,7 +313,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -291,6 +321,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
 				
 				stories.add(s);		
 			}
@@ -307,7 +342,7 @@ public class StoryDAOImpl implements StoryDAO {
 	public List<Story> getAllSenPriorityStories(String genre, String status, Boolean priority, String ae_approval,
 			String ge_approval, String se_approval) {
 		List<Story> stories = new ArrayList<Story>();
-		String sql = "select * from stories where genre = ? AND submitted = ? AND isHighPriority = ? AND ae_approval = ? AND ge_approval = ? AND se_approval = ?;";
+		String sql = "select * from stories where genre = ? AND pitchStatus = ? AND isHighPriority = ? AND ae_approval = ? AND ge_approval = ? AND se_approval = ?;";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -327,7 +362,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -335,6 +370,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
 				
 				stories.add(s);		
 			}
@@ -350,7 +390,7 @@ public class StoryDAOImpl implements StoryDAO {
 	@Override
 	public List<Story> getAllPendingStories(String status, String ae_approval, String ge_approval) {
 		List<Story> stories = new ArrayList<Story>();
-		String sql = "select * from stories where submitted = ? AND ae_approval = ? AND ge_approval = ?;";
+		String sql = "select * from stories where pitchStatus = ? AND ae_approval = ? AND ge_approval = ?;";
 		
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -367,7 +407,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -375,6 +415,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
 				
 				stories.add(s);		
 			}
@@ -407,7 +452,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -415,6 +460,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
 				
 				
 				
@@ -432,8 +482,9 @@ public class StoryDAOImpl implements StoryDAO {
 	public boolean updateStory(Story sChange) {
 
 		String sql = "update stories set authorName = ?, title = ?, releaseDate = ?, tagLine = ?, "
-				+ "description = ?, submitted = ?, isHighPriority = ?,  storyType = ?, genre = ? "
-				+ ", dateSubmitted = ?, ae_approval = ?, ge_approval = ?, se_approval = ? where id = ?;";
+				+ "description = ?, pitchStatus = ?, isHighPriority = ?,  storyType = ?, genre = ? "
+				+ ", dateSubmitted = ?, ae_approval = ?, ge_approval = ?, se_approval = ?, storyDraft = ?,"
+				+ "aeDraft_approval = ?, geDraft_approval = ?, seDraft_approval = ?, draftStatus = ? where id = ?;";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -442,7 +493,7 @@ public class StoryDAOImpl implements StoryDAO {
 			ps.setString(3, sChange.getReleaseDate());
 			ps.setString(4, sChange.getTagLine());
 			ps.setString(5, sChange.getDescription());
-			ps.setString(6, sChange.getSubmitted());
+			ps.setString(6, sChange.getPitchStatus());
 			ps.setBoolean(7, sChange.getIsHighPriority());
 			ps.setString(8, sChange.getStoryType());
 			ps.setString(9, sChange.getGenre());
@@ -450,7 +501,12 @@ public class StoryDAOImpl implements StoryDAO {
 			ps.setString(11, sChange.getAe_approval());
 			ps.setString(12, sChange.getGe_approval());
 			ps.setString(13, sChange.getSe_approval());
-			ps.setInt(14, sChange.getId());
+			ps.setString(14, sChange.getStoryDraft());
+			ps.setString(15, sChange.getAeDraft_Approval());
+			ps.setString(16, sChange.getGeDraft_Approval());
+			ps.setString(17, sChange.getSeDraft_Approval());
+			ps.setString(18, sChange.getDraftStatus());
+			ps.setInt(19, sChange.getId());
 
 			boolean success = ps.execute();
 			
@@ -492,7 +548,7 @@ public class StoryDAOImpl implements StoryDAO {
 	public List<Story> getAllPendingStoriesByAuthor(String authorName, String submitted) {
 		List<Story> stories = new ArrayList<Story>();
 
-		String sql = "select * from stories where authorName = ? AND submitted = ?;";
+		String sql = "select * from stories where authorName = ? AND pitchStatus = ?;";
 
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -509,7 +565,7 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setReleaseDate(rs.getString("releaseDate"));
 				s.setTagLine(rs.getString("tagLine"));
 				s.setDescription(rs.getString("description"));
-				s.setSubmitted(rs.getString("submitted"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
 				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
 				s.setStoryType(rs.getString("storyType"));
 				s.setGenre(rs.getString("genre"));
@@ -517,7 +573,11 @@ public class StoryDAOImpl implements StoryDAO {
 				s.setAe_approval(rs.getString("ae_approval"));
 				s.setGe_approval(rs.getString("ge_approval"));
 				s.setSe_approval(rs.getString("se_approval"));
-				
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
 				
 				stories.add(s);
 				
@@ -529,6 +589,52 @@ public class StoryDAOImpl implements StoryDAO {
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+
+	@Override
+	public List<Story> getAllPendingDrafts(String genre, String aeDraft_approval, String geDraft_approval, String seDraft_approval) {
+		List<Story> stories = new ArrayList<Story>();
+		String sql = "select * from stories where genre = ? AND aeDraft_approval = ? AND geDraft_approval = ? AND seDraft_approval = ?;";
+		
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, genre);
+			ps.setString(2, aeDraft_approval);
+			ps.setString(3, geDraft_approval);
+			ps.setString(4, seDraft_approval);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				Story s = new Story();
+				s.setId(rs.getInt("id"));
+				s.setAuthorName(rs.getString("authorName"));
+				s.setTitle(rs.getString("title"));
+				s.setReleaseDate(rs.getString("releaseDate"));
+				s.setTagLine(rs.getString("tagLine"));
+				s.setDescription(rs.getString("description"));
+				s.setPitchStatus(rs.getString("pitchStatus"));
+				s.setIsHighPriority(rs.getBoolean("isHighPriority"));
+				s.setStoryType(rs.getString("storyType"));
+				s.setGenre(rs.getString("genre"));
+				s.setDateSubmitted(rs.getString("dateSubmitted"));
+				s.setAe_approval(rs.getString("ae_approval"));
+				s.setGe_approval(rs.getString("ge_approval"));
+				s.setSe_approval(rs.getString("se_approval"));
+				s.setStoryDraft(rs.getString("storyDraft"));
+				s.setAeDraft_Approval(rs.getString("aeDraft_approval"));
+				s.setGeDraft_Approval(rs.getString("geDraft_approval"));
+				s.setSeDraft_Approval(rs.getString("seDraft_approval"));
+				s.setDraftStatus(rs.getString("draftStatus"));
+				
+				stories.add(s);		
+			}
+			
+			return stories;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

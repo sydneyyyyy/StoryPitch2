@@ -16,6 +16,7 @@ import com.porter.services.AuthorServices;
 import com.porter.services.AuthorServicesImpl;
 import com.porter.services.StoryTypeServices;
 import com.porter.services.StoryTypeServicesImpl;
+import com.porter.utils.AppLogger;
 
 
 
@@ -54,7 +55,9 @@ public class AuthorControllerImpl implements AuthorController {
 		if (author.getPassword().equals(password)) {
 			return author;
 		} else {
+			AppLogger.logger.warn("Authentication failed.");
 			return null;
+			
 		}
 		
 	}
@@ -84,6 +87,7 @@ public class AuthorControllerImpl implements AuthorController {
 	@Override
 	public void deleteAuthor(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Author a = gson.fromJson(request.getReader(), Author.class);
+		AppLogger.logger.warn("Deleting Author from database.");
 		as.removeAuthor(a);
 		response.getWriter().append(gson.toJson(a));
 		

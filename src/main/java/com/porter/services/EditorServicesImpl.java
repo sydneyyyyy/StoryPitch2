@@ -41,6 +41,11 @@ public class EditorServicesImpl implements EditorServices {
 		return edao.removeEditor(e);
 	}
 
+//	@Override
+//	public Editor getEditorByGenreTitle(String genre, String title) {
+//		return edao.getEditorByGenreTitle(genre, title);
+//	}
+
 
 
 }

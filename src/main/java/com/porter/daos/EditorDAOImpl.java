@@ -169,4 +169,28 @@ public class EditorDAOImpl implements EditorDAO {
 		return null;
 	}
 
+	@Override
+	public Editor getEditorByGenreTitle(String genre, String title) {
+		String sql = "select * from editors where genre = ? AND jobtitle = ?;";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, genre);
+			ps.setString(2, title);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				Editor e = new Editor();
+				e.setId(rs.getInt("id"));
+				e.setEditorName(rs.getString("editorName"));
+				e.setUsername(rs.getString("username"));
+				e.setPassword(rs.getString("password"));
+				e.setGenre(rs.getString("genre"));
+				e.setJobTitle(rs.getString("jobTitle"));
+				return e;
+			}
+		} catch (SQLException error) {
+			error.printStackTrace();
+		}
+		return null;
+	}
+
 }

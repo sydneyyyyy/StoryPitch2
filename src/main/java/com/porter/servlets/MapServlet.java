@@ -26,6 +26,7 @@ import com.porter.services.AuthorServices;
 import com.porter.services.AuthorServicesImpl;
 import com.porter.services.EditorServices;
 import com.porter.services.EditorServicesImpl;
+import com.porter.utils.AppLogger;
 
 public class MapServlet extends HttpServlet {
 
@@ -63,6 +64,7 @@ public class MapServlet extends HttpServlet {
 		switch (uri) {
 		
 			case "/StoryPitch-2/session" : {
+				AppLogger.logger.info("Author saved to session.");
 				a = (Author) session.getAttribute("loggedInUser");
 				System.out.println(a);
 				response.getWriter().append(gson.toJson(a));
@@ -70,6 +72,7 @@ public class MapServlet extends HttpServlet {
 			}
 			
 			case "/StoryPitch-2/edSession" : {
+				AppLogger.logger.info("Editor saved to session.");
 				e = (Editor) session.getAttribute("loggedInEditor");
 				System.out.println(e);
 				response.getWriter().append(gson.toJson(e));
@@ -78,6 +81,7 @@ public class MapServlet extends HttpServlet {
 			}
 			
 			case "/StoryPitch-2/storySession" : {
+				AppLogger.logger.info("Story saved to session.");
 				s = (Story) session.getAttribute("currentStory");
 				System.out.println(s);
 				response.getWriter().append(gson.toJson(s));
@@ -85,6 +89,7 @@ public class MapServlet extends HttpServlet {
 			}
 			
 			case "/StoryPitch-2/authors": {
+				AppLogger.logger.info("Getting all authors");
 				System.out.println("Getting all authors...");
 				List<Author> authors = as.getAllAuthors();
 				System.out.println(authors);
@@ -94,6 +99,7 @@ public class MapServlet extends HttpServlet {
 			}
 			
 			case "/StoryPitch-2/authors/stories": {
+				AppLogger.logger.info("Getting all pending stories");
 				System.out.println("Getting all pending stories...");
 				a = (Author) session.getAttribute("loggedInUser");
 				List<Story> stories = sc.getAllStoriesByAuthor(request, response, a);
@@ -103,6 +109,7 @@ public class MapServlet extends HttpServlet {
 			}
 			
 			case "/StoryPitch-2/authorSignup": {
+				AppLogger.logger.info("Author signing up");
 				System.out.println("Creating a new author...");
 				ac.createAuthor(request, response);
 				response.setHeader("Access-Control-Allow-Origin", "*");
@@ -110,6 +117,7 @@ public class MapServlet extends HttpServlet {
 			}
 	
 			case "/StoryPitch-2/authors/id": {
+				AppLogger.logger.info("Author logging in.");
 				System.out.println("Author logging in...");
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				a = ac.getAuthorById(request, response);
@@ -130,6 +138,7 @@ public class MapServlet extends HttpServlet {
 			}
 			
 			case "/StoryPitch-2/editors/id": {
+				AppLogger.logger.info("Editor logging in.");
 				System.out.println("Editor Logging in...");
 				e = ec.getEditorById(request, response);
 				System.out.println(e);
@@ -169,6 +178,34 @@ public class MapServlet extends HttpServlet {
 				response.setHeader("Access-Control-Allow-Origin", "*");
 				break;
 			}
+			
+			case "/StoryPitch-2/uploadDraft": {
+				System.out.println("Submitting draft...");
+				Story sChange = gson.fromJson(request.getReader(), Story.class);
+				s = (Story) session.getAttribute("currentStory");
+				sc.submitDraft(request, response, sChange, s);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
+			
+			case "/StoryPitch-2/pendingDraft": {
+				System.out.println("Getting pending drafts...");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				sc.getPendingDrafts(request, response, s, e);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
+			
+			case "/StoryPitch-2/approveDraft": {
+				System.out.println("Approving draft...");
+				e = (Editor) session.getAttribute("loggedInEditor");
+				sc.approveDraft(request, response, s, e);
+				response.setHeader("Access-Control-Allow-Origin", "*");
+				break;
+			}
+			
+			// make case for showing editor the draft's waiting 
+			// call sc.submitDraft sChange editor Draft to approved 
 			
 			case "/StoryPitch-2/pendingStories": {
 				System.out.println("Getting all Pending stories...");
@@ -285,6 +322,7 @@ public class MapServlet extends HttpServlet {
 			
 			case "/StoryPitch-2/logout": {
 				System.out.println("Logging out...");
+				AppLogger.logger.warn("Ending session.");
 				session.invalidate();
 				break;
 			}

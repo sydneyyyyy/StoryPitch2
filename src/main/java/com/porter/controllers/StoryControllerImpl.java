@@ -16,6 +16,8 @@ import com.porter.models.Story;
 import com.porter.models.StoryType;
 import com.porter.services.AuthorServices;
 import com.porter.services.AuthorServicesImpl;
+import com.porter.services.EditorServices;
+import com.porter.services.EditorServicesImpl;
 import com.porter.services.StoryServices;
 import com.porter.services.StoryServicesImpl;
 import com.porter.services.StoryTypeServices;
@@ -26,6 +28,7 @@ public class StoryControllerImpl implements StoryController {
 	private StoryServices ss = new StoryServicesImpl();
 	private StoryTypeServices sts = new StoryTypeServicesImpl();
 	private AuthorServices as = new AuthorServicesImpl();
+	private EditorServices es = new EditorServicesImpl();
 	private static Gson gson = new Gson();
 	StoryType st = new StoryType();
 	
@@ -49,7 +52,7 @@ public class StoryControllerImpl implements StoryController {
 		} else {
 			System.out.println("You do not have enough points for this submission! Story Pitch placed on hold");
 			ss.createStory(s);
-			s.setSubmitted("on-hold");
+			s.setPitchStatus("on-hold");
 			ss.updateStory(s);
 		}
 		
@@ -189,9 +192,10 @@ public class StoryControllerImpl implements StoryController {
 	public List<Story> getAllSenPendingStories(HttpServletRequest request, HttpServletResponse response, String genre)
 			throws IOException {
 		String status = "pending";
+		Boolean priority = false;
 		String ae_approval = "approved";
 		String ge_approval = "approved";
-		List<Story> stories = ss.getAllSenPendingStories(genre, status, ae_approval, ge_approval);
+		List<Story> stories = ss.getAllSenPendingStories(genre, status, priority, ae_approval, ge_approval);
 		System.out.println(stories);
 		response.getWriter().append(gson.toJson(stories));
 		return stories;
@@ -228,38 +232,136 @@ public class StoryControllerImpl implements StoryController {
 			System.out.println("Asst");
 			s.setAe_approval(edRes);
 			ss.updateStory(s);
+			System.out.println(s);
 		} else if (e.getJobTitle().equalsIgnoreCase(sen)) {
 			System.out.println("Senior");
 			s.setSe_approval(edRes);
-			s.setSubmitted("approved");
+			s.setPitchStatus("approved");
 			ss.updateStory(s);
+			System.out.println(s);
 			Author a = as.getAuthorByName(author);
 			StoryType st = sts.getStoryTypeByName(story);
 			int auPoints = a.getPoints();
 			int stPoints = st.getPoints();
 			int newPoints = stPoints + auPoints;
-			System.out.println(newPoints);
-			System.out.println(a);
 			a.setPoints(newPoints);
-			System.out.println(a);
 			as.updateAuthor(a);
-			System.out.println(st);
 			
 		}
 	}
 	
+	
+	@Override
+	public List<Story> getPendingDrafts(HttpServletRequest request, HttpServletResponse response, Story s, Editor e)
+			throws IOException {
+		System.out.println("Getting all pending drafts");
+		if (e.getJobTitle().equalsIgnoreCase("Assistant")) {
+			System.out.println("i'm an assistant");
+			List<Story> stories = ss.getAllPendingDrafts(e.getGenre(), "pending", "pending", "pending");
+			System.out.println(stories);
+			response.getWriter().append(gson.toJson(stories));
+		} else if (e.getJobTitle().equalsIgnoreCase("General")) {
+			System.out.println("I'm a general");
+			List<Story> stories = ss.getAllPendingDrafts(e.getGenre(), "approved", "pending", "pending");
+			System.out.println(stories);
+			response.getWriter().append(gson.toJson(stories));
+		} else if (e.getJobTitle().equalsIgnoreCase("Senior")) {
+			System.out.println("I'm a senior");
+			List<Story> stories = ss.getAllPendingDrafts(e.getGenre(), "approved", "approved", "pending");
+			System.out.println(stories);
+			response.getWriter().append(gson.toJson(stories));
+		}
+		return null;
+	}
+
+	@Override
+	public void approveDraft(HttpServletRequest request, HttpServletResponse response, Story s, Editor e)
+			throws IOException {
+		if (e.getJobTitle().equalsIgnoreCase("Assistant")) {
+			System.out.println("Story is not null");
+			s.setAeDraft_Approval("approved");
+			ss.updateStory(s);
+		} else if (e.getJobTitle().equalsIgnoreCase("General")) {
+			System.out.println("I'm a general");
+			System.out.println("Story is not null");
+			s.setGeDraft_Approval("approved");
+			ss.updateStory(s);
+		} else if (e.getJobTitle().equalsIgnoreCase("Senior")) {
+			System.out.println("I'm a senior");
+			System.out.println("Story is not null!");
+			s.setSeDraft_Approval("approved");
+			s.setDraftStatus("approved");
+			ss.updateStory(s);
+		}
+		
+	}
+
+	@Override
+	public void submitDraft(HttpServletRequest request, HttpServletResponse response, Story sChange, Story s)
+			throws IOException {
+		String st = s.getStoryType();
+		System.out.println(st);
+		if (st.equalsIgnoreCase("Novel") || st.equalsIgnoreCase("Novella")) {
+			System.out.println("this is novel");
+			String aDraft = "pending";
+			String gDraft = "pending";
+			String sDraft = "pending";
+			s.setAeDraft_Approval(aDraft);
+			s.setGeDraft_Approval(gDraft);
+			s.setSeDraft_Approval(sDraft);
+			s.setDraftStatus("pending");
+			ss.updateStory(s);
+		} else if (st.equalsIgnoreCase("Story-Stories")) {
+			System.out.println("this is short stories");
+			String aDraft = "approved";
+			String gDraft = "pending";
+			String sDraft = "pending";
+			s.setAeDraft_Approval(aDraft);
+			s.setGeDraft_Approval(gDraft);
+			s.setSeDraft_Approval(sDraft);
+			s.setDraftStatus("pending");
+			ss.updateStory(s);
+		} else if (st.equalsIgnoreCase("Article")) {
+			System.out.println("this is an article");
+			String aDraft = "approved";
+			String gDraft = "approved";
+			String sDraft = "pending";
+			s.setAeDraft_Approval(aDraft);
+			s.setGeDraft_Approval(gDraft);
+			s.setSeDraft_Approval(sDraft);
+			s.setDraftStatus("pending");
+			ss.updateStory(s);
+		}
+		
+		String draft = sChange.getStoryDraft();
+		System.out.println(draft);
+		s.setStoryDraft(draft);
+		s.setDraftStatus("pending");
+		ss.updateStory(s);
+		
+
+	}
+
 	@Override
 	public void rejectStory(HttpServletRequest request, HttpServletResponse response, Editor e, Story s)
 			throws IOException {
-		String author = s.getAuthorName();
-		String story = s.getStoryType();
-		StoryType st = sts.getStoryTypeByName(story);
-		Author a = as.getAuthorByName(author);
-		int points = st.getPoints();
-		ss.removeStory(s);
-		int newPoints = a.getPoints() + points;
-		a.setPoints(newPoints);
-		as.updateAuthor(a);
+		
+		if (s.getPitchStatus().equalsIgnoreCase("approved")) {
+			System.out.println("deleting draft...");
+//			ss.removeStory(s);
+			s.setDraftStatus("rejected");
+			ss.updateStory(s);
+		} else {
+			String author = s.getAuthorName();
+			String story = s.getStoryType();
+			StoryType st = sts.getStoryTypeByName(story);
+			Author a = as.getAuthorByName(author);
+			int points = st.getPoints();
+			ss.removeStory(s);
+			int newPoints = a.getPoints() + points;
+			a.setPoints(newPoints);
+			as.updateAuthor(a);
+		}
 		
 		
 	}
@@ -267,7 +369,7 @@ public class StoryControllerImpl implements StoryController {
 	@Override
 	public Story resubmitStory(HttpServletRequest request, HttpServletResponse response, Story s) throws IOException {
 		String submitted = "pending";
-		s.setSubmitted(submitted);
+		s.setPitchStatus(submitted);
 		System.out.println(s);
 		String author = s.getAuthorName();
 		Author a = as.getAuthorByName(author);

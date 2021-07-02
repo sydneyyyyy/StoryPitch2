@@ -46,4 +46,9 @@ public interface StoryController {
 	
 	public void deleteStories(HttpServletRequest request, HttpServletResponse response) throws IOException;
 	
+	public void submitDraft(HttpServletRequest request, HttpServletResponse response, Story sChange, Story s) throws IOException;
+	
+	public void approveDraft(HttpServletRequest request, HttpServletResponse response, Story s, Editor e) throws IOException;
+	
+	public List<Story> getPendingDrafts(HttpServletRequest request, HttpServletResponse response, Story s, Editor e) throws IOException;
 }

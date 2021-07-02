@@ -21,11 +21,13 @@ public interface StoryDAO {
 	
 	public List<Story> getAllAsstPriorityStories(String genre, String status, Boolean priority, String ae_approval);
 	
-	public List<Story> getAllSenPendingStories(String genre, String status, String ae_approval, String ge_approval);
+	public List<Story> getAllSenPendingStories(String genre, String status, Boolean priority, String ae_approval, String ge_approval);
 	
 	public List<Story> getAllGenPriorityStories(String status, Boolean priority, String ae_approval, String ge_approval);
 	
 	public List<Story> getAllSenPriorityStories(String genre, String status, Boolean priority, String ae_approval, String ge_approval, String se_approval);
+	
+	public List<Story> getAllPendingDrafts(String genre, String aeDraft_approval, String geDraft_approval, String seDraft_approval);
 
 	public boolean updateStory(Story sChange);
 
